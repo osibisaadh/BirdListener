@@ -9,23 +9,30 @@ import javax.sound.sampled.AudioFormat;
  */
 public class WaveHeader {
 
+    private final int BITS_PER_BYTE = 8;
     private AudioFormat format;
     private int numChannels;
     private float sampleRate;
     private float byteRate;
     private int bitsPerSample;
-    private boolean isBigEndian;         s
+    private boolean isBigEndian;
     private float bytesPerSecond;
+    private int bytesPerSample;
+    private int numOfSamples;
+    private int dataLength;
 
 
-    public WaveHeader(AudioFormat format){
+    public WaveHeader(AudioFormat format, int dataLength){
         this.format = format;
         this.numChannels = format.getChannels();
         this.sampleRate = format.getSampleRate();
         this.bitsPerSample = format.getSampleSizeInBits();
         this.byteRate = sampleRate * numChannels * bitsPerSample;
         this.isBigEndian = format.isBigEndian();
-        this.bytesPerSecond = sampleRate * (bitsPerSample/8) *numChannels;
+        this.bytesPerSecond = sampleRate * (bitsPerSample/BITS_PER_BYTE) *numChannels;
+        this.bytesPerSample = bitsPerSample/BITS_PER_BYTE;
+        this.numOfSamples = dataLength/bytesPerSample;
+        this.dataLength = dataLength;
 
     }
 
@@ -53,8 +60,20 @@ public class WaveHeader {
         return byteRate;
     }
 
-    public int getBytesPerSample() {
+    public int getBitsPerSample() {
         return bitsPerSample;
+    }
+
+    public int getBytesPerSample() {
+        return bytesPerSample;
+    }
+
+    public int getNumOfSamples() {
+        return numOfSamples;
+    }
+
+    public int getDataLength() {
+        return dataLength;
     }
 
 }
