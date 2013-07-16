@@ -21,7 +21,7 @@ public class WaveFile {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(fileName));
             AudioFormat format = audioInputStream.getFormat();
             audioInputStream.getFrameLength();
-            header = new WaveHeader(format);
+            header = new WaveHeader(format, audioInputStream.available());
             audioInputStream.available();
             rawData = new  byte[audioInputStream.available()];
             audioInputStream.read(rawData);
@@ -32,8 +32,34 @@ public class WaveFile {
         }
     }
 
-    private void getRawData(){
+    public short[] getSampleAmplitudes(){
+        short[] amplitudes = new short[header.getNumOfSamples()];
 
+        int pointer = 0;
+        for (int i = 0; i < header.getNumOfSamples(); i++) {
+            short amplitude = 0;
+            for (int byteNumber = 0; byteNumber < header.getBytesPerSample(); byteNumber++) {
+                amplitude |= (short) ((rawData[pointer++] & 0xFF) << (byteNumber * 8));
+            }
+            amplitudes[i] = amplitude;
+        }
+
+        return amplitudes;
     }
 
+    private byte[] getRawData(){
+        return  rawData;
+    }
+
+    public WaveHeader getHeader() {
+        return header;
+    }
+
+    public double[] getAudioData() {
+        return audioData;
+    }
+
+    public byte[] getFingerprint() {
+        return fingerprint;
+    }
 }

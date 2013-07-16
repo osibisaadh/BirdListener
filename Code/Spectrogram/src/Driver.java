@@ -17,7 +17,7 @@ public class Driver {
             Wave wave = new Wave("D:\\Downloads\\1.wav");
             Spectrogram spectrogram = wave.getSpectrogram();
             GraphicRender render = new GraphicRender();
-
+            System.out.println();
             double[][] data = spectrogram.getNormalizedSpectrogramData();
             int count = 0;
             double max = 0;
