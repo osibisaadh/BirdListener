@@ -7,14 +7,14 @@
  */
 public class WavTest {
     public static void main(String[] args){
-        WaveFile waveFile = new WaveFile("D:\\Downloads\\1.wav");
-        System.out.println(waveFile.getHeader().getNumOfSamples());
+        WaveFile waveFile = new WaveFile("testData\\1.wav");
+        System.out.println("Number of samples: " + waveFile.getHeader().getNumOfSamples());
         System.out.println(waveFile.getHeader().getBitsPerSample());
-        short[] amplitudes = waveFile.getSampleAmplitudes();
-        for(int i = 0; i < 1000; i++){
-            for(int j = 0; j < (amplitudes[i]+600)/12;j++ )
+        short[] amplitudes = waveFile.getData();
+        for(int i = 0; i < waveFile.getHeader().getSampleRate(); i++){
+            for(int j = 0; j < (amplitudes[i]+5000)/100;j++ )
                 System.out.print(" ");
-            System.out.println(i +":" +amplitudes[i]);
+            System.out.println(amplitudes[i]);
         }
     }
 

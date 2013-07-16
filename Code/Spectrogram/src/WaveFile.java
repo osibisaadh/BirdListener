@@ -13,7 +13,8 @@ import java.io.File;
 public class WaveFile {
     private WaveHeader header;
     private byte[] rawData;
-    private double[] audioData;
+    private short[] data;
+    private double[] normalizedData;
     private byte[] fingerprint;
 
     public WaveFile(String fileName){
@@ -26,28 +27,37 @@ public class WaveFile {
             rawData = new  byte[audioInputStream.available()];
             audioInputStream.read(rawData);
             //Create byte array for data
-
+            initSampleAmplitudes();
+            initNormalAmplitudes();
         }catch(Exception e){
             e.printStackTrace();
         }
     }
-
-    public short[] getSampleAmplitudes(){
-        short[] amplitudes = new short[header.getNumOfSamples()];
-
+    //get a short[] array representation of the audio
+    private void initSampleAmplitudes(){
+        data = new short[header.getNumOfSamples()];
         int pointer = 0;
         for (int i = 0; i < header.getNumOfSamples(); i++) {
             short amplitude = 0;
             for (int byteNumber = 0; byteNumber < header.getBytesPerSample(); byteNumber++) {
+                //(& 0xFF gets the least significant byte from the bytearray)
+
                 amplitude |= (short) ((rawData[pointer++] & 0xFF) << (byteNumber * 8));
             }
-            amplitudes[i] = amplitude;
+            data[i] = amplitude;
         }
-
-        return amplitudes;
     }
 
-    private byte[] getRawData(){
+
+    private void initNormalAmplitudes(){
+        normalizedData = new double[header.getNumOfSamples()];
+        int maxAmplitude = 1 << (header.getBitsPerSample() - 1);
+        for(int i = 0; i < normalizedData.length; i++){
+            normalizedData[i] = (double) data[i] / maxAmplitude;
+        }
+    }
+
+    public byte[] getRawData(){
         return  rawData;
     }
 
@@ -55,11 +65,16 @@ public class WaveFile {
         return header;
     }
 
-    public double[] getAudioData() {
-        return audioData;
-    }
-
     public byte[] getFingerprint() {
         return fingerprint;
     }
+
+    public double[] getNormalizedData() {
+        return normalizedData;
+    }
+
+    public short[] getData() {
+        return data;
+    }
+
 }

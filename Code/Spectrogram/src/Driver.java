@@ -14,7 +14,8 @@ public class Driver {
 
     public static void main(String[] args) {
         try{
-            Wave wave = new Wave("D:\\Downloads\\1.wav");
+            //spectrogram test
+            Wave wave = new Wave("testData\\1.wav");
             Spectrogram spectrogram = wave.getSpectrogram();
             GraphicRender render = new GraphicRender();
             System.out.println();
@@ -22,9 +23,11 @@ public class Driver {
             int count = 0;
             double max = 0;
             double min = 1;
+            //Making sure all the lengths match up
             int dlength = 0;
             boolean dChanged = false;
             boolean first = true;
+            //print all the data from data array we get back to figure out what the information means
             for(double[] d : data){
                 if(first){
                     dlength = d.length;
