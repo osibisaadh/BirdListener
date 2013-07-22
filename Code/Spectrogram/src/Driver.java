@@ -52,7 +52,7 @@ public class Driver {
             System.out.println("y = " + dlength + " changed? " + dChanged);
             System.out.println("Max: " + max + "\nMin: " + min );
             render.setVerticalMarker(1000);
-            render.renderSpectrogramData(data, "D:\\11.jpg");
+            render.renderSpectrogramData(data, "D:\\222.jpg");
         }catch(Exception e){
             e.printStackTrace();
         }

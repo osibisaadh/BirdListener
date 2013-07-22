@@ -47,7 +47,18 @@ public class WaveFile {
             data[i] = amplitude;
         }
     }
+    public double[] getDataInDouble(){
+        double[] dData = new double[data.length];
+        for(int i = 0; i < data.length;i++){
+            dData[i] = data[i];
+        }
+        return dData;
+    }
 
+    public float length() {
+        float second = (float) 16 / header.getByteRate();
+        return second;
+    }
 
     private void initNormalAmplitudes(){
         normalizedData = new double[header.getNumOfSamples()];
