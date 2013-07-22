@@ -20,10 +20,8 @@ public class FastFT {
 
             int indexSize = sampleSize / 2;
 
-            // FFT produces a transformed pair of arrays where the first half of the
-            // values represent positive frequency components and the second half
-            // represents negative frequency components.
-            // we omit the negative ones
+            //FFT first half is positive while the second half is negative
+            //get rid of the negative
             int positiveSize = indexSize / 2;
 
             double[] mag = new double[positiveSize];

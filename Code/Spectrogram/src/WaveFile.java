@@ -11,20 +11,20 @@ import java.io.File;
  * To change this template use File | Settings | File Templates.
  */
 public class WaveFile {
+    public static final int SECONDS_IN_MINUTE = 60;
+    public static final int MINUTES_IN_HOUR = 60;
     private WaveHeader header;
     private byte[] rawData;
     private short[] data;
     private double[] normalizedData;
-    private byte[] fingerprint;
+    //private byte[] fingerprint;
 
     public WaveFile(String fileName){
         try{
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(fileName));
             AudioFormat format = audioInputStream.getFormat();
-            audioInputStream.getFrameLength();
             header = new WaveHeader(format, audioInputStream.available());
-            audioInputStream.available();
-            rawData = new  byte[audioInputStream.available()];
+            rawData = new byte[audioInputStream.available()];
             audioInputStream.read(rawData);
             //Create byte array for data
             initSampleAmplitudes();
@@ -47,6 +47,7 @@ public class WaveFile {
             data[i] = amplitude;
         }
     }
+
     public double[] getDataInDouble(){
         double[] dData = new double[data.length];
         for(int i = 0; i < data.length;i++){
@@ -54,10 +55,20 @@ public class WaveFile {
         }
         return dData;
     }
+    //get total length of file in seconds
+    public float totalSeconds() {
+        float seconds = (float) header.getNumOfSamples() / header.getSampleRate();
+        return seconds;
+    }
 
-    public float length() {
-        float second = (float) 16 / header.getByteRate();
-        return second;
+    //get string time stamp
+    public String getTimeStamp(){
+        float totalSeconds = totalSeconds();
+        float second = totalSeconds % SECONDS_IN_MINUTE;
+        int minute = (int)totalSeconds / SECONDS_IN_MINUTE % MINUTES_IN_HOUR;
+        int hour = (int) totalSeconds / (SECONDS_IN_MINUTE * MINUTES_IN_HOUR);
+
+        return hour + ":" + minute + ":" + second;
     }
 
     private void initNormalAmplitudes(){
@@ -76,9 +87,9 @@ public class WaveFile {
         return header;
     }
 
-    public byte[] getFingerprint() {
-        return fingerprint;
-    }
+//    public byte[] getFingerprint() {
+//        return fingerprint;
+//    }
 
     public double[] getNormalizedData() {
         return normalizedData;
