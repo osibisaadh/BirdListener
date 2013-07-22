@@ -28,7 +28,7 @@ public class WavTest {
 
         GraphicRender render = new GraphicRender();
         render.renderSpectrogramData(spectrogram.getSpectrogram(), "testData\\out\\" + fileName + ".jpg" );
-        render.renderSpectrogramData(new Wave("testData\\" + fileName + ".wav").getSpectrogram().getNormalizedSpectrogramData(), "testData\\out\\" + fileName + "original.jpg");
+        render.renderSpectrogramData(new Wave("testData\\" + fileName + ".wav").getSpectrogram().getNormalizedSpectrogramData(), "testData\\out\\" + fileName + " original.jpg");
 
 //        System.out.println("Length: " + data.length);
 //        for(int i =0; i < 100; i++){
@@ -46,7 +46,6 @@ public class WavTest {
 //            System.out.println(i + ": " + data[i]);
 //        }
 
-        data = new FastFT().getMagnitudes(spectrogram.getFrequencyIntensity());
 //        System.out.println("Amps!!!!________________________");
 //        System.out.println("Length: " + data.length);
 //        for(int i =0; i < 100; i++){

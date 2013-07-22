@@ -1,4 +1,3 @@
-import edu.emory.mathcs.jtransforms.fft.DoubleFFT_1D;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,7 +23,7 @@ public class Spectrogram {
 
     //builds a normalized spectrogram
     private void buildSpectrogram(int fftSampleSize) {
-        short[] waveData = waveFile.getData();
+        double[] waveData = waveFile.getNormalizedData();
         int numSamples = waveData.length;
 
         int numFrames=numSamples/fftSampleSize;
@@ -42,16 +41,16 @@ public class Spectrogram {
             }
         }
 
-        double[][] rawSpectrogram=new double[numFrames][];
+        double[][] rawSpectrogram = new double[numFrames][];
         // for each frame in signals, do fft on it
         FastFT fft = new FastFT();
         for (int i=0; i<numFrames; i++){
             rawSpectrogram[i]=fft.getMagnitudes(signals[i]);
         }
 
-        int numFrequencyUnit=rawSpectrogram[0].length;
-         // normalization of absoluteSpectrogram
-        spectrogram =new double[numFrames][numFrequencyUnit];
+        int numFrequencyUnit = rawSpectrogram[0].length;
+        // normalization of absoluteSpectrogram
+        spectrogram = new double[numFrames][numFrequencyUnit];
 
         // find min and max in order to normalize spectrogram
         double maxAmp=Double.MIN_VALUE;

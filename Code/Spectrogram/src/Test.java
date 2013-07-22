@@ -1,6 +1,3 @@
-import com.musicg.graphic.GraphicRender;
-import edu.emory.mathcs.jtransforms.fft.DoubleFFT_1D;
-
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
