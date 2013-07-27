@@ -1,3 +1,6 @@
+package spectrogram;
+
+import Wav.WaveFile;
 
 /**
  * Created with IntelliJ IDEA.

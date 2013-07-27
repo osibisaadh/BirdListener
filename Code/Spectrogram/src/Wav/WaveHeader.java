@@ -1,3 +1,5 @@
+package Wav;
+
 import javax.sound.sampled.AudioFormat;
 
 /**

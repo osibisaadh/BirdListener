@@ -1,3 +1,5 @@
+package spectrogram;
+
 import com.sun.media.sound.FFT;
 
 /**
