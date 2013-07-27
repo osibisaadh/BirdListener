@@ -1,5 +1,9 @@
+package Drivers;
+
+import Wav.WaveFile;
 import com.musicg.graphic.GraphicRender;
 import com.musicg.wave.Wave;
+import spectrogram.Spectrogram;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,7 +14,7 @@ import com.musicg.wave.Wave;
  */
 public class WavTest {
     public static void main(String[] args){
-        String fileName = "02 Canyon Wren";
+        String fileName = "04 Wood Thrush";
         WaveFile waveFile = new WaveFile("testData\\" + fileName + ".wav");
 //        WaveFile waveFile = new WaveFile("F:\\Music\\Busker Busker\\Busker Busker - Wrap Up (2012)\\Busker Busker - Wrap Up [www.k2nblog.com]\\01 그댈 마주하는건 힘들어 (그마힘).wav");
         System.out.println("Number of samples: " + waveFile.getHeader().getNumOfSamples());
@@ -29,7 +33,13 @@ public class WavTest {
         GraphicRender render = new GraphicRender();
         render.renderSpectrogramData(spectrogram.getSpectrogram(), "testData\\out\\" + fileName + ".jpg" );
         render.renderSpectrogramData(new Wave("testData\\" + fileName + ".wav").getSpectrogram().getNormalizedSpectrogramData(), "testData\\out\\" + fileName + " original.jpg");
-
+        double[][] array = spectrogram.getSpectrogram();
+        for(int i = 0; i < 300; i++){
+            for(int j = 0; j < array[i].length; j++)
+                System.out.print(array[i][j]);
+            System.out.println("");
+        }
+        System.out.println("");
 //        System.out.println("Length: " + data.length);
 //        for(int i =0; i < 100; i++){
 //            for(int j = 0; j < (data[i]+40000)/3000;j++ )
