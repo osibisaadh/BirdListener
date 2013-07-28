@@ -59,7 +59,7 @@ public class WaveFile {
     }
     //get total length of file in seconds
     public float totalSeconds() {
-        float seconds = (float) header.getNumOfSamples() / header.getSampleRate();
+        float seconds = (float) header.getDataLength() / header.getBytesPerSecond();
         return seconds;
     }
 
