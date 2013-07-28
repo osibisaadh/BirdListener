@@ -2,7 +2,6 @@ package Drivers;
 
 import Wav.WaveFile;
 import com.musicg.graphic.GraphicRender;
-import com.musicg.wave.Wave;
 import spectrogram.Spectrogram;
 
 /**
@@ -32,7 +31,7 @@ public class WavTest {
 
         GraphicRender render = new GraphicRender();
         render.renderSpectrogramData(spectrogram.getSpectrogram(), "testData\\out\\" + fileName + ".jpg" );
-        render.renderSpectrogramData(new Wave("testData\\" + fileName + ".wav").getSpectrogram().getNormalizedSpectrogramData(), "testData\\out\\" + fileName + " original.jpg");
+        //render.renderSpectrogramData(new Wave("testData\\" + fileName + ".wav").getSpectrogram().getNormalizedSpectrogramData(), "testData\\out\\" + fileName + " original.jpg");
         double[][] array = spectrogram.getSpectrogram();
         for(int i = 0; i < 300; i++){
             for(int j = 0; j < array[i].length; j++)
