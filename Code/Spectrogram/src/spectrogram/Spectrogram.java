@@ -13,6 +13,8 @@ public class Spectrogram {
     public static final float MIN_VALID_AMP = 0.00000000001F;
     public static final int DEFAULT_FFT_SAMPLE_SIZE = 1024;
     public static final int DEFAULT_OVERLAP = 0;
+
+    private int framesPerSecond;
     private double[] data;
     private double[][] spectrogram;
     private WaveFile waveFile;
@@ -30,6 +32,7 @@ public class Spectrogram {
         int numSamples = waveData.length;
 
         int numFrames=numSamples/fftSampleSize;
+        framesPerSecond = (int) (numFrames / waveFile.totalSeconds());
         // set signals for fft
 //        WindowFunction window = new WindowFunction();
 //        window.setWindowType("Hamming");
@@ -82,8 +85,11 @@ public class Spectrogram {
                 }
                 else{
                     spectrogram[i][j]=(Math.log10(rawSpectrogram[i][j]/minAmp))/diff;
+                    if(spectrogram[i][j] < 0.83)
+                        spectrogram[i][j] = 0;
                 }
             }
+
         }
     }
 
@@ -141,6 +147,11 @@ public class Spectrogram {
     public double[][] getSpectrogram() {
         return spectrogram;
     }
+
+    public int getFramesPerSecond() {
+        return framesPerSecond;
+    }
+
     //end getters and setters
 
 }
