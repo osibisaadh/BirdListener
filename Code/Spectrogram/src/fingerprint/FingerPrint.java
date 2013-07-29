@@ -15,8 +15,8 @@ import java.util.List;
  */
 public class FingerPrint {
 
-    private static final double AMP_THRESHHOLD = 0.80;
-    private static final double NUMBER_OF_SECONDS = 1;
+    private static final double AMP_THRESHHOLD = 0.82;
+    private static final double SECONDS_BETWEEN_WORDS = 1;
     private List<Phrase> phrases;
     private double[][] data;
     private int framesPerSecond;
@@ -28,9 +28,6 @@ public class FingerPrint {
         freqRange = data[0].length;
         List<Point> wordPoints = findPoints();
         phrases = getPhrases(getWords(wordPoints));
-        System.out.println(phrases.size());
-
-
     }
 
     private List<Word> getWords(List<Point> points){
@@ -52,7 +49,7 @@ public class FingerPrint {
         int lastLoc  =0;
         for(int i = 0; i < words.size(); i++){
             int startLoc = words.get(i).getPoint().getStart();
-            if(startLoc - lastLoc > NUMBER_OF_SECONDS*framesPerSecond){
+            if(startLoc - lastLoc > SECONDS_BETWEEN_WORDS * framesPerSecond){
                 int end = i;
                 phrases.add(new Phrase(words.subList(start,end)));
                 start = i+1;
