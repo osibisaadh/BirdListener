@@ -15,24 +15,60 @@ import java.util.List;
  */
 public class FingerPrint {
 
-    private static final double AMP_THRESHHOLD = 0.8;
+    private static final double AMP_THRESHHOLD = 0.80;
 
     private List<Phrase> phrases;
-
+    private double[][] data;
+    private int framesPerSecond;
     public FingerPrint(Spectrogram spectrogram){
-        double[][] data = spectrogram.getSpectrogram();
+        data = spectrogram.getSpectrogram();
+        framesPerSecond = spectrogram.getFramesPerSecond();
         System.out.println(data.length);
-        List<Point> wordPoints = findPoints(data);
+        List<Point> wordPoints = findPoints();
         System.out.println(wordPoints.size());
         for(Point p : wordPoints){
             System.out.println("\tstart: " + p.getStart() + " end: " + p.getEnd());
         }
+        phrases = getPhrases(getWords(wordPoints));
+        System.out.println(phrases.size());
+
 
     }
 
+    private List<Word> getWords(List<Point> points){
+        List<Word> words = new ArrayList<Word>();
+        for(Point p : points){
+            double[][] wordData = new double[p.getEnd() - p.getStart()+1][];
+            System.out.println("Data length: " + wordData.length);
+            for(int i =p.getStart(); i < p.getEnd(); i++){
+                System.out.println(i);
+                for(int j = 0; j < data[i].length; j++){
+                    System.out.println(i-p.getStart());
+                    wordData[(i-p.getStart())][j] = data[i][j];
+                    System.out.println(p.getEnd());
+                }
+            }
+            words.add(new Word(wordData, p));
+        }
+        return words;
+    }
+    private List<Phrase> getPhrases(List<Word> words){
+        List<Phrase> phrases = new ArrayList<Phrase>();
+        int start = 0;
+        int lastLoc  =0;
+        for(int i = 0; i < words.size(); i++){
+            int startLoc = words.get(i).getPoint().getStart();
+            if(startLoc - lastLoc < 2*framesPerSecond){
+                int end = i-1;
+                phrases.add(new Phrase(words.subList(start,end)));
+                start = i+1;
+            }
+            lastLoc = words.get(i).getPoint().getEnd();
+        }
+        return phrases;
+    }
 
-
-    private List<Point> findPoints(double[][] data){
+    private List<Point> findPoints(){
         List<Point> wordPoints = new ArrayList<Point>();
         for(int i =0; i < data.length; i++){
             double maxAmp = 0.0;
@@ -41,8 +77,9 @@ public class FingerPrint {
                     maxAmp = data[i][j];
             }
             if(maxAmp > AMP_THRESHHOLD){
-                int end = findEndPoint(data,i+1);
-                wordPoints.add(new Point(i, end,data));
+                int end = findEndPoint(i+1);
+                if(i+2 < end)
+                    wordPoints.add(new Point(i, end));
                 i = end + 1;
             }
 
@@ -50,7 +87,7 @@ public class FingerPrint {
         return wordPoints;
     }
 
-    private int findEndPoint(double[][] data, int start){
+    private int findEndPoint(int start){
         int end =0;
         for(int i = start; i < data.length && end == 0; i++){
             double maxAmp = 0.0;

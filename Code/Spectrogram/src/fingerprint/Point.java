@@ -10,18 +10,15 @@ package fingerprint;
 public class Point {
     private int start;
     private int end;
-    private double[][] data;
     //Constructors
     public Point(){ }
 
-    public Point(int start, int end, double[][] data){
+    public Point(int start, int end){
         this.start = start;
         this.end = end;
-        this.data = data;
     }
-    public Point(int start, double[][] data){
+    public Point(int start){
         this.start = start;
-        this.data = data;
     }
     //End Constructors
 
@@ -38,8 +35,5 @@ public class Point {
         return end;
     }
 
-    public void setEnd(int end) {
-        this.end = end;
-    }
     //End Getters and Setters
 }

@@ -13,6 +13,8 @@ public class Phrase {
 
     private List<Word> words;
 
-    public Phrase() {
+    public Phrase(List<Word> words) {
+        this.words = words;
     }
+
 }

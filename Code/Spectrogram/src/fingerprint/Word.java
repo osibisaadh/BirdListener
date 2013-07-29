@@ -1,5 +1,7 @@
 package fingerprint;
 
+import spectrogram.Spectrogram;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Osibisaad
@@ -9,9 +11,13 @@ package fingerprint;
  */
 public class Word {
     private double[][] spectrogram;
-
+    private Point point;
     public Word(double[][] spectrogram){
         this.spectrogram = spectrogram;
+    }
+
+    public Word(double[][] spectrogram,Point point){
+        this.point = point;
     }
 
     public boolean match(Word word){
@@ -20,5 +26,11 @@ public class Word {
         return isMatch;
     }
 
+    public double[][] getSpectrogram() {
+        return spectrogram;
+    }
 
+    public Point getPoint() {
+        return point;
+    }
 }
