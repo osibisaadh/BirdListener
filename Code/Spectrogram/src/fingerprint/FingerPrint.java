@@ -16,19 +16,17 @@ import java.util.List;
 public class FingerPrint {
 
     private static final double AMP_THRESHHOLD = 0.80;
-
+    private static final double NUMBER_OF_SECONDS = 1;
     private List<Phrase> phrases;
     private double[][] data;
     private int framesPerSecond;
+    private int freqRange;
+
     public FingerPrint(Spectrogram spectrogram){
         data = spectrogram.getSpectrogram();
         framesPerSecond = spectrogram.getFramesPerSecond();
-        System.out.println(data.length);
+        freqRange = data[0].length;
         List<Point> wordPoints = findPoints();
-        System.out.println(wordPoints.size());
-        for(Point p : wordPoints){
-            System.out.println("\tstart: " + p.getStart() + " end: " + p.getEnd());
-        }
         phrases = getPhrases(getWords(wordPoints));
         System.out.println(phrases.size());
 
@@ -38,14 +36,10 @@ public class FingerPrint {
     private List<Word> getWords(List<Point> points){
         List<Word> words = new ArrayList<Word>();
         for(Point p : points){
-            double[][] wordData = new double[p.getEnd() - p.getStart()+1][];
-            System.out.println("Data length: " + wordData.length);
+            double[][] wordData = new double[p.getEnd() - p.getStart()+1][freqRange];
             for(int i =p.getStart(); i < p.getEnd(); i++){
-                System.out.println(i);
                 for(int j = 0; j < data[i].length; j++){
-                    System.out.println(i-p.getStart());
                     wordData[(i-p.getStart())][j] = data[i][j];
-                    System.out.println(p.getEnd());
                 }
             }
             words.add(new Word(wordData, p));
@@ -58,8 +52,8 @@ public class FingerPrint {
         int lastLoc  =0;
         for(int i = 0; i < words.size(); i++){
             int startLoc = words.get(i).getPoint().getStart();
-            if(startLoc - lastLoc < 2*framesPerSecond){
-                int end = i-1;
+            if(startLoc - lastLoc > NUMBER_OF_SECONDS*framesPerSecond){
+                int end = i;
                 phrases.add(new Phrase(words.subList(start,end)));
                 start = i+1;
             }
@@ -101,4 +95,7 @@ public class FingerPrint {
         return end;
     }
 
+    public List<Phrase> getPhrases() {
+        return phrases;
+    }
 }
