@@ -17,4 +17,11 @@ public class Phrase {
         this.words = words;
     }
 
+    public List<Word> getWords() {
+        return words;
+    }
+
+    public void setWords(List<Word> words) {
+        this.words = words;
+    }
 }
