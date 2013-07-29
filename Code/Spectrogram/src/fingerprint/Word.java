@@ -17,6 +17,7 @@ public class Word {
     }
 
     public Word(double[][] spectrogram,Point point){
+        this.spectrogram = spectrogram;
         this.point = point;
     }
 
