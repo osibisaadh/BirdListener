@@ -1,5 +1,8 @@
 package fingerprint;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Osibisaad
@@ -19,12 +22,38 @@ public class Word {
         this.wordRange = wordRange;
     }
 
-    public boolean match(Word word){
-        boolean isMatch = false;
+    public double match(Word word){
+        List<IntensityPoint> curPoints = findIntensityPoints();
+        boolean[] matches = new boolean[curPoints.size()];
+        List<IntensityPoint> paramPoints = word.findIntensityPoints();
+        for(int i = 0; i < curPoints.size(); i++){
+            boolean pointMatched = false;
+            for(int k = 0; k < paramPoints.size() && !pointMatched; k++){
+                matches[i] = curPoints.get(i).isMatch(paramPoints.get(k));
+                if(matches[i]){
+                    pointMatched = true;
+                    paramPoints.remove(i);
+                }
+            }
+        }
+        int numTrue =0;
+        for(int i = 0; i < matches.length; i++){
+            if(matches[i])
+                numTrue++;
+        }
 
+        return numTrue / matches.length;
+    }
 
-
-        return isMatch;
+    private List<IntensityPoint> findIntensityPoints(){
+        List<IntensityPoint> points = new ArrayList<IntensityPoint>();
+        for(int i = 0; i < spectrogram.length; i++){
+            for(int k =0; k < spectrogram[i].length; i++){
+                if(spectrogram[i][k] <= 0.8)
+                    points.add(new IntensityPoint(i,k,spectrogram[i][k]));
+            }
+        }
+        return points;
     }
 
     public double[][] getSpectrogram() {

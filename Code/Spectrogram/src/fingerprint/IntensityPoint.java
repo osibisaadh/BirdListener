@@ -8,6 +8,7 @@ package fingerprint;
  * To change this template use File | Settings | File Templates.
  */
 public class IntensityPoint {
+    private static final int SIMILRITY_BUFFER = 4;
     private int x;
     private int y;
     private double intensity;
@@ -24,9 +25,10 @@ public class IntensityPoint {
         this.intensity = intensity;
     }
 
-    public boolean isMatch(){
+    public boolean isMatch(IntensityPoint point){
         boolean isMatch = false;
-
+        if(point.getY() < y +SIMILRITY_BUFFER && point.getY() > y - SIMILRITY_BUFFER)
+            isMatch = true;
         return isMatch;
     }
 
