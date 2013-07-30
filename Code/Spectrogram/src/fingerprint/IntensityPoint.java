@@ -8,7 +8,7 @@ package fingerprint;
  * To change this template use File | Settings | File Templates.
  */
 public class IntensityPoint {
-    private static final int SIMILRITY_BUFFER = 4;
+    private static final int SIMILRITY_BUFFER = 2;
     private int x;
     private int y;
     private double intensity;

@@ -12,6 +12,7 @@ import java.util.List;
  */
 public class Phrase {
 
+    private final int MAX_LENGTH_DIFF = 30;
     private List<Word> words;
 
     public Phrase(List<Word> words) {
@@ -46,7 +47,16 @@ public class Phrase {
         for(int i = 0; i < similarity.length; i++){
             similaritySum += similarity[i][0];
         }
-        return similaritySum / similarity.length;
+
+        double lengthDiff = 1.0;
+        if(Math.abs(phrase.words.size()-words.size()) > MAX_LENGTH_DIFF){
+            double larger = Math.max(words.size(), phrase.words.size());
+            double smaller = Math.min(words.size(), phrase.words.size());
+            lengthDiff = smaller / larger;
+
+        }
+
+        return similaritySum / similarity.length * lengthDiff;
     }
 
     public List<Word> getWords() {

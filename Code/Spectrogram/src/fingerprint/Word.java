@@ -11,6 +11,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class Word {
+    private final int MAX_LENGTH_DIFF = 100;
     private double[][] spectrogram;
     private WordRange wordRange;
     public Word(double[][] spectrogram){
@@ -23,16 +24,27 @@ public class Word {
     }
 
     public double match(Word word){
+        List<IntensityPoint> first;
+        List<IntensityPoint> second;
         List<IntensityPoint> curPoints = findIntensityPoints();
-        boolean[] matches = new boolean[curPoints.size()];
         List<IntensityPoint> paramPoints = word.findIntensityPoints();
-        for(int i = 0; i < curPoints.size(); i++){
+        if(paramPoints.size() > curPoints.size()){
+            first = new ArrayList<IntensityPoint>(paramPoints);
+            second = new ArrayList<IntensityPoint>(curPoints);
+        }
+        else{
+            first = new ArrayList<IntensityPoint>(curPoints);
+            second = new ArrayList<IntensityPoint>(paramPoints);
+        }
+
+        boolean[] matches = new boolean[first.size()];
+        for(int i = 0; i < first.size(); i++){
             boolean pointMatched = false;
-            for(int k = 0; k < paramPoints.size() && !pointMatched; k++){
-                matches[i] = curPoints.get(i).isMatch(paramPoints.get(k));
+            for(int k = 0; k < second.size() && !pointMatched; k++){
+                matches[i] = first.get(i).isMatch(second.get(k));
                 if(matches[i]){
                     pointMatched = true;
-                    paramPoints.remove(k);
+                    second.remove(k);
                 }
             }
         }
@@ -41,8 +53,20 @@ public class Word {
             if(matches[i])
                 numTrue++;
         }
+//        System.out.println(numTrue + " / " + matches.length);
+        double similarity = (double)numTrue/(double)matches.length;
+//        System.out.println( curPoints.size()+ ", " + paramPoints.size() + " : " + similarity);
 
-        return numTrue / matches.length;
+
+        double lengthDiff = 1.0;
+        if(Math.abs(curPoints.size()-paramPoints.size()) > MAX_LENGTH_DIFF){
+            double larger = Math.max(curPoints.size(), paramPoints.size());
+            double smaller = Math.min(curPoints.size(), paramPoints.size());
+            lengthDiff = smaller / larger;
+
+        }
+        //System.out.println(similarity + ", " + lengthDiff);
+        return similarity * lengthDiff;
     }
 
     private List<IntensityPoint> findIntensityPoints(){

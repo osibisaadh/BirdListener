@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class FingerPrint {
 
-    private static final double AMP_THRESHHOLD = 0.82;
+    private static final double AMP_THRESHHOLD = 0.85;
     private static final double SECONDS_BETWEEN_WORDS = 1;
     private List<Phrase> phrases;
     private double[][] data;
@@ -43,6 +43,7 @@ public class FingerPrint {
         }
         return words;
     }
+
     private List<Phrase> getPhrases(List<Word> words){
         List<Phrase> phrases = new ArrayList<Phrase>();
         int start = 0;
