@@ -12,8 +12,11 @@ import java.util.List;
  */
 public class Word {
     private final int MAX_LENGTH_DIFF = 100;
+    private final int NUM_OF_FREQUENCIES = 2;
     private double[][] spectrogram;
     private WordRange wordRange;
+    private int[] notableFreq = new int[NUM_OF_FREQUENCIES];
+
     public Word(double[][] spectrogram){
         this.spectrogram = spectrogram;
     }
@@ -21,6 +24,11 @@ public class Word {
     public Word(double[][] spectrogram, WordRange wordRange){
         this.spectrogram = spectrogram;
         this.wordRange = wordRange;
+    }
+
+    private void initNotableFreq(){
+        notableFreq[0] = wordRange.getStart();
+        notableFreq[1] = wordRange.getEnd();
     }
 
     public double match(Word word){
@@ -93,5 +101,9 @@ public class Word {
 
     public WordRange getWordRange() {
         return wordRange;
+    }
+
+    public int[] getNotableFreq() {
+        return notableFreq;
     }
 }
