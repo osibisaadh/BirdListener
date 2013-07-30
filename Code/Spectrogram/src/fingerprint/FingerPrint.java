@@ -26,13 +26,13 @@ public class FingerPrint {
         data = spectrogram.getSpectrogram();
         framesPerSecond = spectrogram.getFramesPerSecond();
         freqRange = data[0].length;
-        List<Point> wordPoints = findPoints();
-        phrases = getPhrases(getWords(wordPoints));
+        List<WordRange> ranges = findPoints();
+        phrases = getPhrases(getWords(ranges));
     }
 
-    private List<Word> getWords(List<Point> points){
+    private List<Word> getWords(List<WordRange> wordRanges){
         List<Word> words = new ArrayList<Word>();
-        for(Point p : points){
+        for(WordRange p : wordRanges){
             double[][] wordData = new double[p.getEnd() - p.getStart()+1][freqRange];
             for(int i =p.getStart(); i < p.getEnd(); i++){
                 for(int j = 0; j < data[i].length; j++){
@@ -48,19 +48,19 @@ public class FingerPrint {
         int start = 0;
         int lastLoc  =0;
         for(int i = 0; i < words.size(); i++){
-            int startLoc = words.get(i).getPoint().getStart();
+            int startLoc = words.get(i).getWordRange().getStart();
             if(startLoc - lastLoc > SECONDS_BETWEEN_WORDS * framesPerSecond){
                 int end = i;
                 phrases.add(new Phrase(words.subList(start,end)));
                 start = i+1;
             }
-            lastLoc = words.get(i).getPoint().getEnd();
+            lastLoc = words.get(i).getWordRange().getEnd();
         }
         return phrases;
     }
 
-    private List<Point> findPoints(){
-        List<Point> wordPoints = new ArrayList<Point>();
+    private List<WordRange> findPoints(){
+        List<WordRange> ranges = new ArrayList<WordRange>();
         for(int i =0; i < data.length; i++){
             double maxAmp = 0.0;
             for(int j = 0; j < data[i].length; j++){
@@ -70,12 +70,12 @@ public class FingerPrint {
             if(maxAmp > AMP_THRESHHOLD){
                 int end = findEndPoint(i+1);
                 if(i+2 < end)
-                    wordPoints.add(new Point(i, end));
+                    ranges.add(new WordRange(i, end));
                 i = end + 1;
             }
 
         }
-        return wordPoints;
+        return ranges;
     }
 
     private int findEndPoint(int start){

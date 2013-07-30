@@ -7,17 +7,17 @@ package fingerprint;
  * Time: 8:42 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Point {
+public class WordRange {
     private int start;
     private int end;
     //Constructors
-    public Point(){ }
+    public WordRange(){ }
 
-    public Point(int start, int end){
+    public WordRange(int start, int end){
         this.start = start;
         this.end = end;
     }
-    public Point(int start){
+    public WordRange(int start){
         this.start = start;
     }
     //End Constructors

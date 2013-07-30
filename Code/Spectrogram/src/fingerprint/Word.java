@@ -1,7 +1,5 @@
 package fingerprint;
 
-import spectrogram.Spectrogram;
-
 /**
  * Created with IntelliJ IDEA.
  * User: Osibisaad
@@ -11,14 +9,14 @@ import spectrogram.Spectrogram;
  */
 public class Word {
     private double[][] spectrogram;
-    private Point point;
+    private WordRange wordRange;
     public Word(double[][] spectrogram){
         this.spectrogram = spectrogram;
     }
 
-    public Word(double[][] spectrogram,Point point){
+    public Word(double[][] spectrogram, WordRange wordRange){
         this.spectrogram = spectrogram;
-        this.point = point;
+        this.wordRange = wordRange;
     }
 
     public boolean match(Word word){
@@ -33,7 +31,7 @@ public class Word {
         return spectrogram;
     }
 
-    public Point getPoint() {
-        return point;
+    public WordRange getWordRange() {
+        return wordRange;
     }
 }
