@@ -23,26 +23,20 @@ public class FingerPrintTest {
         Spectrogram wavSpec = new Spectrogram(waveFile);
         FingerPrint fingerPrint = new FingerPrint(wavSpec);
 
-
-
+//        String fileName2 = "480A";
+//        String fileName2 = "10 Western Meadowlark";
+//        String fileName2 = "07 Northern Cardinal";
+//        String fileName2 = "06 White-throated Sparrow";
+//        String fileName2 = "04 Wood Thrush";
         String fileName2 = "02 Canyon Wren";
         WaveFile waveFile2 = new WaveFile("testData\\" + fileName2 + ".wav");
         Spectrogram wavSpec2 = new Spectrogram(waveFile2);
         FingerPrint fingerPrint2 = new FingerPrint(wavSpec2);
 
+        System.out.println("Phrases: " + fingerPrint2.getPhrases().size() + ", " + fingerPrint.getPhrases().size());
         double similarity = fingerPrint.match(fingerPrint2);
         System.out.println("Similarity: " + similarity );
-//        List<Phrase> phrases = fingerPrint.getPhrases();
-//
-//        GraphicRender render = new GraphicRender();
-//
-//        int index = 0;
-//        for(Phrase p : phrases){
-//            for(Word w : p.getWords()){
-//                render.renderSpectrogramData(w.getSpectrogram(),"testData\\out\\other\\" + fileName + index +".jpg");
-//                index++;
-//            }
-//        }
+
     }
 
 }
