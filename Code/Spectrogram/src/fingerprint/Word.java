@@ -70,13 +70,20 @@ public class Word {
     }
 
     private List<IntensityPoint> findIntensityPoints(){
-        List<IntensityPoint> points = new ArrayList<IntensityPoint>();
+        List<IntensityPoint> temppoints = new ArrayList<IntensityPoint>();
         for(int i = 0; i < spectrogram.length; i++){
             for(int k =0; k < spectrogram[i].length; k++){
                 if(spectrogram[i][k] >= 0.8)
-                    points.add(new IntensityPoint(i,k,spectrogram[i][k]));
+                    temppoints.add(new IntensityPoint(i,k,spectrogram[i][k]));
             }
         }
+
+        List<IntensityPoint> points = new ArrayList<IntensityPoint>();
+//        for(int i = 0; i < temppoints.size(); i++){
+            points.add(temppoints.get(0));
+            points.add(temppoints.get(temppoints.size()-1));
+//        }
+
         return points;
     }
 
