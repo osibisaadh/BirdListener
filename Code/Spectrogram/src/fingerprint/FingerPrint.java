@@ -78,6 +78,37 @@ public class FingerPrint {
         return ranges;
     }
 
+    public double match(FingerPrint print){
+        List<Phrase> first;
+        List<Phrase> second;
+        if(print.phrases.size() > phrases.size()){
+            first = new ArrayList<Phrase>(print.phrases);
+            second = new ArrayList<Phrase>(phrases);
+        }
+        else{
+            first = new ArrayList<Phrase>(phrases);
+            second = new ArrayList<Phrase>(print.phrases);
+        }
+        double[][] similarity = new double[first.size()][2];
+
+        for(int i = 0; i < first.size();i++){
+            for(int k = 0; k < second.size(); k++){
+                double wordSimilarity = first.get(i).match(second.get(k));
+                if(similarity[i][0] < wordSimilarity){
+                    similarity[i][0] = wordSimilarity;
+                    similarity[i][1] = k;
+                }
+            }
+            second.remove(similarity[i][1]);
+        }
+
+        double similaritySum = 0;
+        for(int i = 0; i < similarity.length; i++){
+            similaritySum += similarity[i][0];
+        }
+        return similaritySum / similarity.length;
+    }
+
     private int findEndPoint(int start){
         int end =0;
         for(int i = start; i < data.length && end == 0; i++){

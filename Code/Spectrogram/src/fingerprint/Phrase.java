@@ -39,10 +39,14 @@ public class Phrase {
                     similarity[i][1] = k;
                 }
             }
-            second.remove(similarity[i][0]);
+            second.remove(similarity[i][1]);
         }
 
-        return 0.0;
+        double similaritySum = 0;
+        for(int i = 0; i < similarity.length; i++){
+            similaritySum += similarity[i][0];
+        }
+        return similaritySum / similarity.length;
     }
 
     public List<Word> getWords() {
