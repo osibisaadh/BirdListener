@@ -10,12 +10,19 @@ import java.util.List;
  * Time: 2:45 PM
  * To change this template use File | Settings | File Templates.
  */
+
+
 public class Word {
-    private final int MAX_LENGTH_DIFF = 100;
+    private  final int MAX_FREQ_DIFF = 10;
+    private final int MAX_LENGTH_DIFF = 40;
     private final int NUM_OF_FREQUENCIES = 2;
     private double[][] spectrogram;
+    private int wordLength;
+    private int maxFreq = Integer.MIN_VALUE;
+    private int minFreq = Integer.MAX_VALUE;
     private WordRange wordRange;
-    private int[] notableFreq = new int[NUM_OF_FREQUENCIES];
+    private FreqDirection direction;
+    private double[] notableFreq = new double[NUM_OF_FREQUENCIES];
 
     public Word(double[][] spectrogram){
         this.spectrogram = spectrogram;
@@ -24,35 +31,84 @@ public class Word {
     public Word(double[][] spectrogram, WordRange wordRange){
         this.spectrogram = spectrogram;
         this.wordRange = wordRange;
+        this.wordLength = wordRange.getEnd() - wordRange.getStart();
+        initNotableFreq();
+        findMinAndMaxFreq();
+    }
+
+    private void findMinAndMaxFreq(){
+
+        for(int i =0; i < spectrogram.length; i ++){
+            for(int k = 0; k < spectrogram[i].length; k++){
+                if(spectrogram[i][k] >= 0.85){
+                    if(k > maxFreq)
+                        maxFreq = k;
+                    else if(k < minFreq)
+                        minFreq = k;
+                }
+            }
+        }
     }
 
     private void initNotableFreq(){
-        notableFreq[0] = wordRange.getStart();
-        notableFreq[1] = wordRange.getEnd();
+        int maxAmpIndex = 0;
+        //most intense freq at beginning
+        for(int i = 0; i < spectrogram[0].length; i++){
+            if(spectrogram[0][i] > spectrogram[0][maxAmpIndex])
+                maxAmpIndex = i;
+        }
+        notableFreq[0] = maxAmpIndex;
+
+
+        //Most intense freq at end.
+        for(int i = 0; i < spectrogram[spectrogram.length-1].length; i++){
+            if(spectrogram[spectrogram.length-1][i] > spectrogram[spectrogram.length-1][maxAmpIndex])
+                maxAmpIndex = i;
+        }
+        notableFreq[1] = maxAmpIndex;
+        if(notableFreq[0] > notableFreq[1])
+            direction = FreqDirection.Down;
+        else
+            direction = FreqDirection.Up;
     }
 
     public double match(Word word){
-        List<IntensityPoint> first;
-        List<IntensityPoint> second;
-        List<IntensityPoint> curPoints = findIntensityPoints();
-        List<IntensityPoint> paramPoints = word.findIntensityPoints();
-        if(paramPoints.size() > curPoints.size()){
-            first = new ArrayList<IntensityPoint>(paramPoints);
-            second = new ArrayList<IntensityPoint>(curPoints);
+        double matchPrecent =0.0;
+        for(int i = 0; i < notableFreq.length; i++){
+            if(notableFreq[i] >= word.notableFreq[i] - MAX_FREQ_DIFF && notableFreq[i] <= word.notableFreq[i] + MAX_FREQ_DIFF){
+                matchPrecent = 1.0;
+            }
         }
-        else{
-            first = new ArrayList<IntensityPoint>(curPoints);
-            second = new ArrayList<IntensityPoint>(paramPoints);
+        if(wordLength >= word.wordLength - MAX_LENGTH_DIFF && wordLength <= word.wordLength + MAX_LENGTH_DIFF)
+            matchPrecent *= 1.0;
+        else
+            matchPrecent *= 0.3;
+
+        if(word.direction != word.direction){
+            matchPrecent *= 0.2;
         }
 
-        boolean[] matches = new boolean[first.size()];
-        for(int i = 0; i < first.size(); i++){
+        if(!(maxFreq >= word.maxFreq - MAX_FREQ_DIFF && maxFreq <= maxFreq + MAX_FREQ_DIFF))
+            matchPrecent *= 0.2;
+        if(!(minFreq >= word.minFreq - MAX_FREQ_DIFF && minFreq <= minFreq + MAX_FREQ_DIFF))
+            matchPrecent *=0.2;
+
+
+        return matchPrecent;
+    }
+
+    public double matchFull(Word word){
+        List<IntensityPoint> curPoints = findIntensityPoints();
+        List<IntensityPoint> paramPoints = word.findIntensityPoints();
+
+        boolean[] matches = new boolean[curPoints.size()];
+        for(int i = 0; i < curPoints.size(); i++){
             boolean pointMatched = false;
-            for(int k = 0; k < second.size() && !pointMatched; k++){
-                matches[i] = first.get(i).isMatch(second.get(k));
+            for(int k = 0; k < paramPoints.size() && !pointMatched; k++){
+                matches[i] = curPoints.get(i).isMatch(paramPoints.get(k));
                 if(matches[i]){
                     pointMatched = true;
-                    second.remove(k);
+                    paramPoints.remove(k);
                 }
             }
         }
@@ -66,15 +122,15 @@ public class Word {
 //        System.out.println( curPoints.size()+ ", " + paramPoints.size() + " : " + similarity);
 
 
-        double lengthDiff = 1.0;
-        if(Math.abs(curPoints.size()-paramPoints.size()) > MAX_LENGTH_DIFF){
-            double larger = Math.max(curPoints.size(), paramPoints.size());
-            double smaller = Math.min(curPoints.size(), paramPoints.size());
-            lengthDiff = smaller / larger;
-
-        }
+//        double lengthDiff = 1.0;
+//        if(Math.abs(curPoints.size()-paramPoints.size()) > MAX_LENGTH_DIFF){
+//            double larger = Math.max(curPoints.size(), paramPoints.size());
+//            double smaller = Math.min(curPoints.size(), paramPoints.size());
+//            lengthDiff = smaller / larger;
+//
+//        }
         //System.out.println(similarity + ", " + lengthDiff);
-        return similarity * lengthDiff;
+        return similarity;//* lengthDiff;
     }
 
     private List<IntensityPoint> findIntensityPoints(){
@@ -103,7 +159,7 @@ public class Word {
         return wordRange;
     }
 
-    public int[] getNotableFreq() {
+    public double[] getNotableFreq() {
         return notableFreq;
     }
 }
