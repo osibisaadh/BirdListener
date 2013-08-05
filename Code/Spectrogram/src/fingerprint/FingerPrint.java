@@ -52,7 +52,9 @@ public class FingerPrint {
             int startLoc = words.get(i).getWordRange().getStart();
             if(startLoc - lastLoc > SECONDS_BETWEEN_WORDS * framesPerSecond){
                 int end = i;
-                phrases.add(new Phrase(words.subList(start,end)));
+                Phrase phrase = new Phrase(words.subList(start,end));
+                if(phrase.getWords().size() > 0)
+                    phrases.add(phrase);
                 start = i+1;
             }
             lastLoc = words.get(i).getWordRange().getEnd();
@@ -79,16 +81,17 @@ public class FingerPrint {
         return ranges;
     }
 
+
     public double match(FingerPrint print){
         List<Phrase> first;
         List<Phrase> second;
         if(print.phrases.size() > phrases.size()){
-            first = new ArrayList<Phrase>(print.phrases);
-            second = new ArrayList<Phrase>(phrases);
-        }
-        else{
             first = new ArrayList<Phrase>(phrases);
             second = new ArrayList<Phrase>(print.phrases);
+        }
+        else{
+            first = new ArrayList<Phrase>(print.phrases);
+            second = new ArrayList<Phrase>(phrases);
         }
         double[][] similarity = new double[first.size()][2];
 
@@ -107,7 +110,7 @@ public class FingerPrint {
         for(int i = 0; i < similarity.length; i++){
             similaritySum += similarity[i][0];
         }
-        return similaritySum / similarity.length;
+        return similaritySum / (double)similarity.length;
     }
 
     private int findEndPoint(int start){
