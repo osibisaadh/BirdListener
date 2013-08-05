@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class Phrase {
 
-    private final int MAX_LENGTH_DIFF = 30;
+    private final int MAX_LENGTH_DIFF = 6;
     private List<Word> words;
 
     public Phrase(List<Word> words) {
@@ -22,7 +22,8 @@ public class Phrase {
     public double match(Phrase phrase){
         List<Word> first;
         List<Word> second;
-        if(phrase.words.size() > words.size()){
+        System.out.println(phrase.words.size() + "--" + words.size());
+        if(phrase.words.size() < words.size()){
             first = new ArrayList<Word>(phrase.words);
             second = new ArrayList<Word>(words);
         }
@@ -44,19 +45,26 @@ public class Phrase {
         }
 
         double similaritySum = 0;
+        int matchCount =0;
         for(int i = 0; i < similarity.length; i++){
             similaritySum += similarity[i][0];
+            if(similarity[i][0] >= 0.8)
+                matchCount++;
+
+            System.out.println(similaritySum);
         }
+
+//        System.out.println(matchCount + "/" + similarity.length);
 
         double lengthDiff = 1.0;
         if(Math.abs(phrase.words.size()-words.size()) > MAX_LENGTH_DIFF){
             double larger = Math.max(words.size(), phrase.words.size());
             double smaller = Math.min(words.size(), phrase.words.size());
-            lengthDiff = smaller / larger;
+            lengthDiff = smaller / (larger - MAX_LENGTH_DIFF);
 
         }
 
-        return similaritySum / similarity.length * lengthDiff;
+        return (double)matchCount / (double)similarity.length * lengthDiff;
     }
 
     public List<Word> getWords() {
