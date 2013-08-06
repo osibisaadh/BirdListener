@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class FingerPrint {
 
-    private static final double AMP_THRESHHOLD = 0.85;
+    private static final double AMP_THRESHHOLD = 0.9;
     private static final double SECONDS_BETWEEN_WORDS = 1;
     private List<Phrase> phrases;
     private double[][] data;
@@ -33,7 +33,7 @@ public class FingerPrint {
     private List<Word> getWords(List<WordRange> wordRanges){
         List<Word> words = new ArrayList<Word>();
         for(WordRange p : wordRanges){
-            double[][] wordData = new double[p.getEnd() - p.getStart()+1][freqRange];
+            double[][] wordData = new double[p.getEnd() - p.getStart()][freqRange];
             for(int i =p.getStart(); i < p.getEnd(); i++){
                 for(int j = 0; j < data[i].length; j++){
                     wordData[(i-p.getStart())][j] = data[i][j];
@@ -103,13 +103,19 @@ public class FingerPrint {
                     similarity[i][1] = k;
                 }
             }
-            second.remove(similarity[i][1]);
+//            second.remove(similarity[i][1]);
         }
 
         double similaritySum = 0;
+        int matchCount =0;
         for(int i = 0; i < similarity.length; i++){
             similaritySum += similarity[i][0];
+            if(similarity[i][0] >= 0.8)
+                matchCount++;
+
+            System.out.println(similaritySum);
         }
+
         return similaritySum / (double)similarity.length;
     }
 

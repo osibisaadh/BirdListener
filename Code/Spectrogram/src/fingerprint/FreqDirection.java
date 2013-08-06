@@ -8,5 +8,5 @@ package fingerprint;
  * To change this template use File | Settings | File Templates.
  */
 public enum FreqDirection {
-    Up, Down;
+    Up, Even,Down;
 }

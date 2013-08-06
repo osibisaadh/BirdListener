@@ -34,14 +34,17 @@ public class Phrase {
         double[][] similarity = new double[first.size()][2];
 
         for(int i = 0; i < first.size();i++){
+            double matchs = 0;
             for(int k = 0; k < second.size(); k++){
                 double wordSimilarity = first.get(i).match(second.get(k));
+                if(wordSimilarity > 0.6)
+                    matchs++;
                 if(similarity[i][0] < wordSimilarity){
                     similarity[i][0] = wordSimilarity;
-                    similarity[i][1] = k;
+                    similarity[i][1] = matchs;
                 }
             }
-            second.remove(similarity[i][1]);
+//            second.remove(similarity[i][1]);
         }
 
         double similaritySum = 0;
@@ -54,8 +57,6 @@ public class Phrase {
             System.out.println(similaritySum);
         }
 
-//        System.out.println(matchCount + "/" + similarity.length);
-
         double lengthDiff = 1.0;
         if(Math.abs(phrase.words.size()-words.size()) > MAX_LENGTH_DIFF){
             double larger = Math.max(words.size(), phrase.words.size());
@@ -63,8 +64,7 @@ public class Phrase {
             lengthDiff = smaller / (larger - MAX_LENGTH_DIFF);
 
         }
-
-        return (double)matchCount / (double)similarity.length * lengthDiff;
+        return similaritySum / (double)similarity.length * lengthDiff;
     }
 
     public List<Word> getWords() {

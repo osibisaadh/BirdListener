@@ -13,16 +13,19 @@ import java.util.List;
 
 
 public class Word {
-    private  final int MAX_FREQ_DIFF = 10;
-    private final int MAX_LENGTH_DIFF = 40;
+    private  final int MAX_FREQ_DIFF = 30;
+    private final int MAX_NOTABLE_FREQ_DIFF = 10;
+    private final int MAX_LENGTH_DIFF = 20;
     private final int NUM_OF_FREQUENCIES = 2;
     private double[][] spectrogram;
     private int wordLength;
     private int maxFreq = Integer.MIN_VALUE;
     private int minFreq = Integer.MAX_VALUE;
+    private double freqChange;
     private WordRange wordRange;
     private FreqDirection direction;
     private double[] notableFreq = new double[NUM_OF_FREQUENCIES];
+    private String textRepresentation;
 
     public Word(double[][] spectrogram){
         this.spectrogram = spectrogram;
@@ -59,39 +62,47 @@ public class Word {
         }
         notableFreq[0] = maxAmpIndex;
 
-
+        maxAmpIndex = 0;
         //Most intense freq at end.
+
         for(int i = 0; i < spectrogram[spectrogram.length-1].length; i++){
             if(spectrogram[spectrogram.length-1][i] > spectrogram[spectrogram.length-1][maxAmpIndex])
                 maxAmpIndex = i;
         }
         notableFreq[1] = maxAmpIndex;
+
+        freqChange = Math.abs(notableFreq[0]-notableFreq[1]);
+
         if(notableFreq[0] > notableFreq[1])
             direction = FreqDirection.Down;
-        else
+        else if(notableFreq[0] < notableFreq[1])
             direction = FreqDirection.Up;
+        if(notableFreq[0] > notableFreq[1]-2 && notableFreq[0] < notableFreq[1] + 2)
+            direction = FreqDirection.Even;
     }
 
     public double match(Word word){
-        double matchPrecent =0.0;
+        double matchPrecent = 1.0;
         for(int i = 0; i < notableFreq.length; i++){
-            if(notableFreq[i] >= word.notableFreq[i] - MAX_FREQ_DIFF && notableFreq[i] <= word.notableFreq[i] + MAX_FREQ_DIFF){
-                matchPrecent = 1.0;
+            if(!(notableFreq[i] >= word.notableFreq[i] - MAX_NOTABLE_FREQ_DIFF && notableFreq[i] <= word.notableFreq[i] + MAX_NOTABLE_FREQ_DIFF)){
+                matchPrecent *= 0.8;
             }
         }
-        if(wordLength >= word.wordLength - MAX_LENGTH_DIFF && wordLength <= word.wordLength + MAX_LENGTH_DIFF)
-            matchPrecent *= 1.0;
-        else
-            matchPrecent *= 0.3;
 
-        if(word.direction != word.direction){
-            matchPrecent *= 0.2;
+        if(!(freqChange >= word.freqChange - 3 && freqChange <= word.freqChange + 3))
+            matchPrecent *= 0.5;
+
+        if(!(wordLength >= word.wordLength - MAX_LENGTH_DIFF && wordLength <= word.wordLength + MAX_LENGTH_DIFF))
+            matchPrecent *= 0.7;
+
+        if(direction.ordinal() != word.direction.ordinal()){
+            matchPrecent *= 0.32;
         }
 
-        if(!(maxFreq >= word.maxFreq - MAX_FREQ_DIFF && maxFreq <= maxFreq + MAX_FREQ_DIFF))
-            matchPrecent *= 0.2;
-        if(!(minFreq >= word.minFreq - MAX_FREQ_DIFF && minFreq <= minFreq + MAX_FREQ_DIFF))
-            matchPrecent *=0.2;
+        if(!(maxFreq >= word.maxFreq - MAX_FREQ_DIFF && maxFreq <= word.maxFreq + MAX_FREQ_DIFF))
+            matchPrecent *= 0.4;
+        if(!(minFreq >= word.minFreq - MAX_FREQ_DIFF && minFreq <= word.minFreq + MAX_FREQ_DIFF))
+            matchPrecent *=0.4;
 
 
         return matchPrecent;
@@ -161,5 +172,9 @@ public class Word {
 
     public double[] getNotableFreq() {
         return notableFreq;
+    }
+
+    public String toString(){
+        return textRepresentation;
     }
 }
