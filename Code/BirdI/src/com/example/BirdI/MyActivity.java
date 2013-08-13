@@ -25,7 +25,7 @@ public class MyActivity extends Activity {
 
     private ImageButton listenButton;
     private RotateAnimation anim;
-    private BirdRecorder recorder;
+    private BirdiRecorder recorder;
     private boolean recording = false;
 
     /**
@@ -50,26 +50,22 @@ public class MyActivity extends Activity {
     public void onListenButtonClick(View view){
         Log.d("2","clicked");
         if(recording == false){
-            recording = true;
             listenButton.startAnimation(anim);
-            recorder = new BirdRecorder();
+            recorder = new BirdiRecorder();
             listenButton.setImageResource(R.drawable.stop);
             recorder.startRecording();
+            recording = true;
         }
         else{
             listenButton.setAnimation(null);
             listenButton.setImageResource(R.drawable.listen);
-            recording = false;
             recorder.stopRecording();
+            recording = false;
         }
 
 
     }
 
-    public void onStopButtonClick(View view){
-        recorder.stopRecording();
-
-    }
 
 //    public class TouchListener implements View.OnTouchListener{
 //
