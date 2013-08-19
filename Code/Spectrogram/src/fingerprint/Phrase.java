@@ -78,22 +78,40 @@ public class Phrase {
     }
 
     public int[] getPrint(){
-        int[] wordPrintSums = new int[words.get(0).getPrint().length];
-        System.out.println("PHRASE_____________");
-        for(int i = 0; i < words.size(); i++){
-            int[] wordPrint = words.get(i).getPrint();
-            for(int k = 0; k < wordPrintSums.length; k++){
-                wordPrintSums[k] += wordPrint[k];
-            }
-            System.out.println("Word " + i + " : " + words.get(i).toString());
-        }
+//        int[] wordPrintSums = new int[words.get(0).getPrint().length];
+//        System.out.println("PHRASE_____________");
+//        for(int i = 0; i < words.size(); i++){
+//            int[] wordPrint = words.get(i).getPrint();
+//            for(int k = 0; k < wordPrintSums.length; k++){
+//                wordPrintSums[k] += wordPrint[k];
+//            }
+//            System.out.println("Word " + i + " : " + words.get(i).toString());
+//        }
 
-        int[] print = new int[wordPrintSums.length + 2];
-        print[0] = words.size();
-        print[1] = lengthInMilisec;
-        for(int k = 0; k < wordPrintSums.length; k++){
-            print[k + 2] = wordPrintSums[k]/print[0];
-        }
+        //0: WordNum || 1: length in miliseconds || 2: beginning freq || 3: freqChangeDirection begin:mid || 4: frequencyChange begin:mid || 5: midFreq || 6: freqChangeDirection mid:end || 7: frequencyChange mid:end || 8:endFreq
+        int WORD_NUM_INDEX = 0;
+        int MILISEC_INDEX = 1;
+        int BEGIN_FREQ_INDEX = 2;
+        int BEG_MID_DIRECTION_INDEX = 3;
+        int BEG_MID_CHANGE_INDEX = 4;
+        int MID_FREQ_INDEX = 5;
+        int MID_END_DIRECTION_INDEX = 6;
+        int MID_END_CHANGE_INDEX = 7;
+        int END_FREQ_INDEX = 8;
+
+        int[] print = new int[9];
+        print[WORD_NUM_INDEX] = words.size();
+        print[MILISEC_INDEX] = lengthInMilisec;
+        print[BEGIN_FREQ_INDEX] = words.get(0).getPrint()[0];
+        print[MID_FREQ_INDEX] = words.get(words.size()/2).getPrint()[0];
+        print[BEG_MID_DIRECTION_INDEX] = getDirection(print[BEGIN_FREQ_INDEX], print[MID_FREQ_INDEX]).ordinal();
+        print[BEG_MID_CHANGE_INDEX] = Math.abs( print[BEGIN_FREQ_INDEX]- print[MID_FREQ_INDEX]);
+        print[END_FREQ_INDEX] = words.get(words.size()-1).getPrint()[0];
+        print[MID_END_DIRECTION_INDEX] = getDirection(print[5], print[END_FREQ_INDEX]).ordinal();
+        print[MID_END_CHANGE_INDEX] = Math.abs(print[MID_FREQ_INDEX] - print[END_FREQ_INDEX]);
+//        for(int k = 0; k < wordPrintSums.length; k++){
+//            print[k + 2] = wordPrintSums[k]/print[0];
+//        }
 
         return print;
     }
@@ -111,5 +129,16 @@ public class Phrase {
                 word += "-";
         }
         return word;
+    }
+
+    private FreqDirection getDirection(int f1, int f2){
+        FreqDirection direction = null;
+        if(f1 > f2)
+            direction = FreqDirection.Down;
+        else if(f1 < f2)
+            direction = FreqDirection.Up;
+        if(f1 > f2-2 && f1 < f2 + 2)
+            direction = FreqDirection.Even;
+        return direction;
     }
 }
