@@ -13,7 +13,7 @@ import spectrogram.Spectrogram;
  */
 public class WavTest {
     public static void main(String[] args){
-        String fileName = "3877a";
+        String fileName = "10 Western Meadowlark";
         WaveFile waveFile = new WaveFile("testData\\" + fileName + ".wav");
 //        WaveFile waveFile = new WaveFile("F:\\Music\\Busker Busker\\Busker Busker - Wrap Up (2012)\\Busker Busker - Wrap Up [www.k2nblog.com]\\01 그댈 마주하는건 힘들어 (그마힘).wav");
         System.out.println("Number of samples: " + waveFile.getHeader().getNumOfSamples());

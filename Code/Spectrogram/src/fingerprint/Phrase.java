@@ -107,7 +107,7 @@ public class Phrase {
         print[BEG_MID_DIRECTION_INDEX] = getDirection(print[BEGIN_FREQ_INDEX], print[MID_FREQ_INDEX]).ordinal();
         print[BEG_MID_CHANGE_INDEX] = Math.abs( print[BEGIN_FREQ_INDEX]- print[MID_FREQ_INDEX]);
         print[END_FREQ_INDEX] = words.get(words.size()-1).getPrint()[0];
-        print[MID_END_DIRECTION_INDEX] = getDirection(print[5], print[END_FREQ_INDEX]).ordinal();
+        print[MID_END_DIRECTION_INDEX] = getDirection(print[MID_FREQ_INDEX], print[END_FREQ_INDEX]).ordinal();
         print[MID_END_CHANGE_INDEX] = Math.abs(print[MID_FREQ_INDEX] - print[END_FREQ_INDEX]);
 //        for(int k = 0; k < wordPrintSums.length; k++){
 //            print[k + 2] = wordPrintSums[k]/print[0];
