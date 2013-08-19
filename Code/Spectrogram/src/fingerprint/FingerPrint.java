@@ -73,7 +73,7 @@ public class FingerPrint {
             if(maxAmp > AMP_THRESHHOLD){
                 int end = findEndPoint(i+1);
                 if(i+2 < end)
-                    ranges.add(new WordRange(i, end));
+                    ranges.add(new WordRange(i, end, framesPerSecond));
                 i = end + 1;
             }
 
@@ -100,10 +100,8 @@ public class FingerPrint {
                 double wordSimilarity = first.get(i).match(second.get(k));
                 if(similarity[i][0] < wordSimilarity){
                     similarity[i][0] = wordSimilarity;
-                    similarity[i][1] = k;
                 }
             }
-//            second.remove(similarity[i][1]);
         }
 
         double similaritySum = 0;
@@ -113,7 +111,6 @@ public class FingerPrint {
             if(similarity[i][0] >= 0.8)
                 matchCount++;
 
-            System.out.println(similaritySum);
         }
 
         return similaritySum / (double)similarity.length;
