@@ -15,16 +15,16 @@ import java.util.List;
 public class Word {
     private  final int MAX_FREQ_DIFF = 30;
     private final int MAX_NOTABLE_FREQ_DIFF = 10;
-    private final int MAX_LENGTH_DIFF = 20;
-    private final int NUM_OF_FREQUENCIES = 2;
+    private final int MAX_LENGTH_DIFF = 10;
+    private final int NUM_OF_FREQUENCIES = 3;
     private double[][] spectrogram;
-    private int wordLength;
+    private int lengthInMiliSec;
     private int maxFreq = Integer.MIN_VALUE;
     private int minFreq = Integer.MAX_VALUE;
     private double freqChange;
     private WordRange wordRange;
     private FreqDirection direction;
-    private double[] notableFreq = new double[NUM_OF_FREQUENCIES];
+    private int[] notableFreq = new int[NUM_OF_FREQUENCIES];
     private String textRepresentation;
 
     public Word(double[][] spectrogram){
@@ -34,7 +34,7 @@ public class Word {
     public Word(double[][] spectrogram, WordRange wordRange){
         this.spectrogram = spectrogram;
         this.wordRange = wordRange;
-        this.wordLength = wordRange.getEnd() - wordRange.getStart();
+        this.lengthInMiliSec = (int)((float)(wordRange.getEnd() - wordRange.getStart())/wordRange.getFramesPerSecond()) * 1000;
         initNotableFreq();
         findMinAndMaxFreq();
     }
@@ -63,22 +63,23 @@ public class Word {
         notableFreq[0] = maxAmpIndex;
 
         maxAmpIndex = 0;
+        //Most intense freq in middle
+        for(int i = 0; i < spectrogram[spectrogram.length/2].length; i++){
+            if(spectrogram[spectrogram.length-1][i] > spectrogram[spectrogram.length-1][maxAmpIndex])
+                maxAmpIndex = i;
+        }
+        notableFreq[1] = maxAmpIndex;
+
+
+        maxAmpIndex = 0;
         //Most intense freq at end.
 
         for(int i = 0; i < spectrogram[spectrogram.length-1].length; i++){
             if(spectrogram[spectrogram.length-1][i] > spectrogram[spectrogram.length-1][maxAmpIndex])
                 maxAmpIndex = i;
         }
-        notableFreq[1] = maxAmpIndex;
+        notableFreq[2] = maxAmpIndex;
 
-        freqChange = Math.abs(notableFreq[0]-notableFreq[1]);
-
-        if(notableFreq[0] > notableFreq[1])
-            direction = FreqDirection.Down;
-        else if(notableFreq[0] < notableFreq[1])
-            direction = FreqDirection.Up;
-        if(notableFreq[0] > notableFreq[1]-2 && notableFreq[0] < notableFreq[1] + 2)
-            direction = FreqDirection.Even;
     }
 
     public double match(Word word){
@@ -92,7 +93,7 @@ public class Word {
         if(!(freqChange >= word.freqChange - 3 && freqChange <= word.freqChange + 3))
             matchPrecent *= 0.5;
 
-        if(!(wordLength >= word.wordLength - MAX_LENGTH_DIFF && wordLength <= word.wordLength + MAX_LENGTH_DIFF))
+        if(!(lengthInMiliSec >= word.lengthInMiliSec - MAX_LENGTH_DIFF && lengthInMiliSec <= word.lengthInMiliSec + MAX_LENGTH_DIFF))
             matchPrecent *= 0.7;
 
         if(direction.ordinal() != word.direction.ordinal()){
@@ -106,6 +107,19 @@ public class Word {
 
 
         return matchPrecent;
+    }
+
+    public int[] getPrint(){
+        int[] print = new int[8];
+        print[0] = notableFreq[0];
+        print[1] = getDirection(notableFreq[0], notableFreq[1]).ordinal();
+        print[2] = notableFreq[1];
+        print[3] = getDirection(notableFreq[1], notableFreq[2]).ordinal();
+        print[4] = notableFreq[2];
+        print[5] = maxFreq;
+        print[6] = minFreq;
+        print[7] = lengthInMiliSec;
+        return print;
     }
 
     public double matchFull(Word word){
@@ -162,6 +176,17 @@ public class Word {
         return points;
     }
 
+    private FreqDirection getDirection(int f1, int f2){
+        FreqDirection direction = null;
+        if(f1 > f2)
+            direction = FreqDirection.Down;
+        else if(f1 < f2)
+            direction = FreqDirection.Up;
+        if(f1 > f2-2 && f1 < f2 + 2)
+            direction = FreqDirection.Even;
+        return direction;
+    }
+
     public double[][] getSpectrogram() {
         return spectrogram;
     }
@@ -170,11 +195,18 @@ public class Word {
         return wordRange;
     }
 
-    public double[] getNotableFreq() {
+    public int[] getNotableFreq() {
         return notableFreq;
     }
 
     public String toString(){
-        return textRepresentation;
+        String word = "";
+        int[] print = getPrint();
+        for(int i = 0; i < print.length; i++){
+            word += print[i];
+            if(i < print.length-1)
+                word += "-";
+        }
+        return word;
     }
 }
