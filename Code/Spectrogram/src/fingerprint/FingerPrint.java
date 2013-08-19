@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class FingerPrint {
 
-    private static final double AMP_THRESHHOLD = 0.9;
+    private static final double AMP_THRESHHOLD = 0.95;
     private static final double SECONDS_BETWEEN_WORDS = 1;
     private List<Phrase> phrases;
     private double[][] data;
@@ -116,6 +116,15 @@ public class FingerPrint {
         return similaritySum / (double)similarity.length;
     }
 
+    public int[][] getPrint(){
+        int[][] print = new int[phrases.size()][];
+        for(int i = 0; i < phrases.size(); i++){
+            print[i] = phrases.get(i).getPrint();
+        }
+
+        return print;
+    }
+
     private int findEndPoint(int start){
         int end =0;
         for(int i = start; i < data.length && end == 0; i++){
@@ -132,5 +141,20 @@ public class FingerPrint {
 
     public List<Phrase> getPhrases() {
         return phrases;
+    }
+
+    public String toString(){
+        String word = "";
+        for(int i = 0; i < phrases.size(); i++){
+            int[] print = phrases.get(i).getPrint();
+            for(int k = 0; k < print.length; k++){
+                word += print[k];
+                if(k < print.length-1)
+                    word += "-";
+            }
+            if(i < phrases.size()-1)
+                word += "\n";
+        }
+        return word;
     }
 }

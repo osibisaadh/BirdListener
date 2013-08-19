@@ -18,7 +18,11 @@ public class Phrase {
 
     public Phrase(List<Word> words) {
         this.words = words;
-        this.lengthInMilisec = (int)((float)(words.get(words.size() - 1).getWordRange().getEnd() - words.get(0).getWordRange().getStart())/words.get(0).getWordRange().getFramesPerSecond()) * 1000;
+        try{
+            this.lengthInMilisec = (int)((double)(words.get(words.size() - 1).getWordRange().getEnd() - words.get(0).getWordRange().getStart()) / words.get(0).getWordRange().getFramesPerSecond() * 1000);
+        }catch (Exception e){
+        }
+
     }
 
     public double match(Phrase phrase){
@@ -74,14 +78,17 @@ public class Phrase {
     }
 
     public int[] getPrint(){
-        int[] wordPrintSums = new int[7];
+        int[] wordPrintSums = new int[words.get(0).getPrint().length];
+        System.out.println("PHRASE_____________");
         for(int i = 0; i < words.size(); i++){
             int[] wordPrint = words.get(i).getPrint();
             for(int k = 0; k < wordPrintSums.length; k++){
                 wordPrintSums[k] += wordPrint[k];
             }
+            System.out.println("Word " + i + " : " + words.get(i).toString());
         }
-        int[] print = new int[9];
+
+        int[] print = new int[wordPrintSums.length + 2];
         print[0] = words.size();
         print[1] = lengthInMilisec;
         for(int k = 0; k < wordPrintSums.length; k++){
@@ -93,5 +100,16 @@ public class Phrase {
 
     public void setWords(List<Word> words) {
         this.words = words;
+    }
+
+    public String toString(){
+        String word = "";
+        int[] print = getPrint();
+        for(int i = 0; i < print.length; i++){
+            word += print[i];
+            if(i < print.length-1)
+                word += "-";
+        }
+        return word;
     }
 }

@@ -34,7 +34,7 @@ public class Word {
     public Word(double[][] spectrogram, WordRange wordRange){
         this.spectrogram = spectrogram;
         this.wordRange = wordRange;
-        this.lengthInMiliSec = (int)((float)(wordRange.getEnd() - wordRange.getStart())/wordRange.getFramesPerSecond()) * 1000;
+        this.lengthInMiliSec = (int)((float)(wordRange.getEnd() - wordRange.getStart())/wordRange.getFramesPerSecond() * 1000);
         initNotableFreq();
         findMinAndMaxFreq();
     }
@@ -46,7 +46,7 @@ public class Word {
                 if(spectrogram[i][k] >= 0.85){
                     if(k > maxFreq)
                         maxFreq = k;
-                    else if(k < minFreq)
+                    else if(k < minFreq && k != 0)
                         minFreq = k;
                 }
             }
@@ -65,11 +65,10 @@ public class Word {
         maxAmpIndex = 0;
         //Most intense freq in middle
         for(int i = 0; i < spectrogram[spectrogram.length/2].length; i++){
-            if(spectrogram[spectrogram.length-1][i] > spectrogram[spectrogram.length-1][maxAmpIndex])
+            if(spectrogram[spectrogram.length/2][i] > spectrogram[spectrogram.length/2][maxAmpIndex])
                 maxAmpIndex = i;
         }
         notableFreq[1] = maxAmpIndex;
-
 
         maxAmpIndex = 0;
         //Most intense freq at end.
@@ -80,6 +79,8 @@ public class Word {
         }
         notableFreq[2] = maxAmpIndex;
 
+
+        System.out.println( "Beginning: " + notableFreq[0] + " middle: " +notableFreq[1] + "End: " + notableFreq[2]);
     }
 
     public double match(Word word){
@@ -110,7 +111,7 @@ public class Word {
     }
 
     public int[] getPrint(){
-        int[] print = new int[8];
+        int[] print = new int[10];
         print[0] = notableFreq[0];
         print[1] = getDirection(notableFreq[0], notableFreq[1]).ordinal();
         print[2] = notableFreq[1];
@@ -119,6 +120,8 @@ public class Word {
         print[5] = maxFreq;
         print[6] = minFreq;
         print[7] = lengthInMiliSec;
+        print[8] = Math.abs(notableFreq[1] - notableFreq[0]);
+        print[9] = Math.abs(notableFreq[1] - notableFreq[2]);
         return print;
     }
 
