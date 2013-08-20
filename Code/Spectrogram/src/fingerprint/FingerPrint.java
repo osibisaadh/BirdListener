@@ -28,6 +28,7 @@ public class FingerPrint {
         freqRange = data[0].length;
         List<WordRange> ranges = findPoints();
         phrases = getPhrases(getWords(ranges));
+        System.out.println(spectrogram.getWaveFile().getFileName());
     }
 
     private List<Word> getWords(List<WordRange> wordRanges){
@@ -81,7 +82,6 @@ public class FingerPrint {
         return ranges;
     }
 
-
     public double match(FingerPrint print){
         List<Phrase> first;
         List<Phrase> second;
@@ -120,6 +120,7 @@ public class FingerPrint {
         int[][] print = new int[phrases.size()][];
         for(int i = 0; i < phrases.size(); i++){
             print[i] = phrases.get(i).getPrint();
+            System.out.println("\t" + phrases.get(i).toString() );
         }
 
         return print;

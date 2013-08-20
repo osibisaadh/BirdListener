@@ -20,8 +20,10 @@ public class WaveFile {
     private short[] data;
     private double[] normalizedData;
     //private byte[] fingerprint;
+    private String fileName;
 
     public WaveFile(String fileName){
+        this.fileName = fileName;
         try{
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(fileName));
             AudioFormat format = audioInputStream.getFormat();
@@ -95,6 +97,10 @@ public class WaveFile {
 
     public double[] getNormalizedData() {
         return normalizedData;
+    }
+
+    public String getFileName() {
+        return fileName;
     }
 
     public short[] getData() {

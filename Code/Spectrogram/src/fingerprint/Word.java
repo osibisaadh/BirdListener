@@ -78,9 +78,6 @@ public class Word {
                 maxAmpIndex = i;
         }
         notableFreq[2] = maxAmpIndex;
-
-
-        System.out.println( "Beginning: " + notableFreq[0] + " middle: " +notableFreq[1] + "End: " + notableFreq[2]);
     }
 
     public double match(Word word){
