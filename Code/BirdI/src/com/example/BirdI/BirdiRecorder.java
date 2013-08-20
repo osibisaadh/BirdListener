@@ -33,11 +33,6 @@ public class BirdiRecorder {
         if (!folder.exists()) {
             success = folder.mkdir();
         }
-        if (success) {
-            System.out.println("YAY");
-        } else {
-            System.out.println("NEJ");
-        }
     }
 
     private String getNextName(){
@@ -45,7 +40,7 @@ public class BirdiRecorder {
             String fileName = "bird_recording_";
             System.out.println(mFileName + "/" + fileName);
             File file = new File(mFileName);
-            int lastNum = 1;
+            int lastNum = 0;
             if(file.listFiles().length > 0){
                 for(File f : file.listFiles()){
                     System.out.println(f.getName());
