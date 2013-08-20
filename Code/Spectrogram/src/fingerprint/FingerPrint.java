@@ -15,12 +15,13 @@ import java.util.List;
  */
 public class FingerPrint {
 
-    private static final double AMP_THRESHHOLD = 0.95;
+    private static final double AMP_THRESHHOLD = 0.80;
     private static final double SECONDS_BETWEEN_WORDS = 1;
     private List<Phrase> phrases;
     private double[][] data;
     private int framesPerSecond;
     private int freqRange;
+    private String birdName;
 
     public FingerPrint(Spectrogram spectrogram){
         data = spectrogram.getSpectrogram();
@@ -124,6 +125,25 @@ public class FingerPrint {
         }
 
         return print;
+    }
+
+    public int[] getFullPrint(){
+        int[] sum = new int[phrases.get(0).getPrint().length];
+        try{
+            for(Phrase p : phrases){
+                int[] tempPrint=  p.getPrint();
+                for(int i = 0; i < sum.length; i++){
+                    sum[i] += tempPrint[i];
+                }
+            }
+            for(int i = 0; i < sum.length; i++){
+                sum[i] = sum[i]/phrases.size();
+            }
+
+        }catch (Exception e ){
+            e.printStackTrace();
+        }
+        return sum;
     }
 
     private int findEndPoint(int start){

@@ -32,78 +32,68 @@ public class Driver {
     public static void main(String[] args) {
         try{
 
-            String fileName = "480A";
-//            String fileName = "3876a";
-//            String fileName = "3877a";
+            String fileName = "Canyon Wren -- 2";
             FingerPrint fingerPrint = getFingerPrint(fileName);
-            int[][] prints = fingerPrint.getPrint();
-            addPoints(prints);
+            addPoints(fingerPrint.getFullPrint());
 
             String fileName2 = "480A";
-            fileName2 = "02 Canyon Wren";
+            fileName2 = "Canyon Wren -- 1";
             fingerPrint = getFingerPrint(fileName2);
-            addPoints(fingerPrint.getPrint());
+            addPoints(fingerPrint.getFullPrint());
 
-            fileName2 = "3876a";
+            fileName2 = "Wood Thrush -- 5";
             fingerPrint = getFingerPrint(fileName2);
-            addPoints(fingerPrint.getPrint());
+            addPoints(fingerPrint.getFullPrint());
 
-            fileName2 = "3877a";
+            fileName2 = "Wood Thrush -- 4";
             fingerPrint = getFingerPrint(fileName2);
-            addPoints(fingerPrint.getPrint());
+            addPoints(fingerPrint.getFullPrint());
 //
-            fileName2 = "Canyon Wren1";
+            fileName2 = "Canyon Wren -- 4";
             fingerPrint = getFingerPrint(fileName2);
-            addPoints(fingerPrint.getPrint());
+            addPoints(fingerPrint.getFullPrint());
 
-            fileName2 = "Canyon Wren2";
+            fileName2 = "Canyon Wren -- 3";
             fingerPrint = getFingerPrint(fileName2);
-            addPoints(fingerPrint.getPrint());
-//            fileName2 = "10 Western Meadowlark";
-//            fingerPrint = getFingerPrint(fileName2);
-//            addPoints(fingerPrint.getPrint());
+            addPoints(fingerPrint.getFullPrint());
 
-            fileName2 = "07 Northern Cardinal";
+            fileName2 = "Northern Cardinal -- 1";
             fingerPrint = getFingerPrint(fileName2);
-            addPoints(fingerPrint.getPrint());
+            addPoints(fingerPrint.getFullPrint());
 
-            fileName2 = "NorthernCardinal1";
+            fileName2 = "Northern Cardinal -- 2";
             fingerPrint = getFingerPrint(fileName2);
-            addPoints(fingerPrint.getPrint());
+            addPoints(fingerPrint.getFullPrint());
 
-            fileName2 = "NorthernCardinal2";
+            fileName2 = "Northern Cardinal -- 3";
             fingerPrint = getFingerPrint(fileName2);
-            addPoints(fingerPrint.getPrint());
+            addPoints(fingerPrint.getFullPrint());
 
-            fileName2 = "Western Meadlark1";
+            fileName2 = "Western Meadowlark -- 1";
             fingerPrint = getFingerPrint(fileName2);
-            addPoints(fingerPrint.getPrint());
+            addPoints(fingerPrint.getFullPrint());
 
-            fileName2 = "Western Meadlark2";
+            fileName2 = "Western Meadowlark -- 2";
             fingerPrint = getFingerPrint(fileName2);
-            addPoints(fingerPrint.getPrint());
+            addPoints(fingerPrint.getFullPrint());
 
-            fileName2 = "Western Meadlark3-1";
+            fileName2 = "Western Meadowlark -- 3";
             fingerPrint = getFingerPrint(fileName2);
-            addPoints(fingerPrint.getPrint());
+            addPoints(fingerPrint.getFullPrint());
 
-            fileName2 = "Western Meadlark3-2";
+            fileName2 = "Wood Thrush -- 3";
             fingerPrint = getFingerPrint(fileName2);
-            addPoints(fingerPrint.getPrint());
+            addPoints(fingerPrint.getFullPrint());
 
-            fileName2 = "WoodThrush1";
+            fileName2 = "Wood Thrush -- 2";
             fingerPrint = getFingerPrint(fileName2);
-            addPoints(fingerPrint.getPrint());
-
-            fileName2 = "WoodThrush2";
-            fingerPrint = getFingerPrint(fileName2);
-            addPoints(fingerPrint.getPrint());
+            addPoints(fingerPrint.getFullPrint());
 //            fileName2 = "06 White-throated Sparrow";
 //            fingerPrint = getFingerPrint(fileName2);
 //            addPoints(fingerPrint.getPrint());
-            fileName2 = "04 Wood Thrush";
+            fileName2 = "Wood Thrush -- 1";
             fingerPrint = getFingerPrint(fileName2);
-            addPoints(fingerPrint.getPrint());
+            addPoints(fingerPrint.getFullPrint());
 
 
             IntClusters <List<int[]>> clusters = new IntClusters<List<int[]>>(9, 4);
@@ -137,6 +127,10 @@ public class Driver {
         for(int i = 0; i < prints.length; i++){
             pts.add(prints[i]);
         }
+    }
+
+    private static void addPoints(int[] print){
+        pts.add(print);
     }
 
 }

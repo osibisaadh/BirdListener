@@ -15,6 +15,7 @@ public class Phrase {
     private final int MAX_LENGTH_DIFF = 4;
     private List<Word> words;
     private int lengthInMilisec = 0;
+    private String birdName;
 
     public Phrase(List<Word> words) {
         this.words = words;
