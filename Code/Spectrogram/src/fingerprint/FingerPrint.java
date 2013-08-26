@@ -30,6 +30,9 @@ public class FingerPrint {
         List<WordRange> ranges = findPoints();
         phrases = getPhrases(getWords(ranges));
         System.out.println(spectrogram.getWaveFile().getFileName());
+        String[] nameParts = spectrogram.getWaveFile().getFileName().split("\\\\");
+        birdName = nameParts[nameParts.length-1].split(" -- ")[0];
+        System.out.println(birdName);
     }
 
     private List<Word> getWords(List<WordRange> wordRanges){
@@ -49,11 +52,12 @@ public class FingerPrint {
     private List<Phrase> getPhrases(List<Word> words){
         List<Phrase> phrases = new ArrayList<Phrase>();
         int start = 0;
-        int lastLoc  =0;
+        int lastLoc = 0;
+        int end = 0;
         for(int i = 0; i < words.size(); i++){
             int startLoc = words.get(i).getWordRange().getStart();
+            end = i+1;
             if(startLoc - lastLoc > SECONDS_BETWEEN_WORDS * framesPerSecond){
-                int end = i;
                 Phrase phrase = new Phrase(words.subList(start,end));
                 if(phrase.getWords().size() > 0)
                     phrases.add(phrase);
@@ -61,6 +65,8 @@ public class FingerPrint {
             }
             lastLoc = words.get(i).getWordRange().getEnd();
         }
+        if(phrases.size() == 0)
+            phrases.add(new Phrase(words.subList(start,end)));
         return phrases;
     }
 
@@ -78,7 +84,6 @@ public class FingerPrint {
                     ranges.add(new WordRange(i, end, framesPerSecond));
                 i = end + 1;
             }
-
         }
         return ranges;
     }
@@ -123,7 +128,6 @@ public class FingerPrint {
             print[i] = phrases.get(i).getPrint();
             System.out.println("\t" + phrases.get(i).toString() );
         }
-
         return print;
     }
 

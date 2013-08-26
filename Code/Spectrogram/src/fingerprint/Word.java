@@ -29,6 +29,8 @@ public class Word {
 
     public Word(double[][] spectrogram){
         this.spectrogram = spectrogram;
+        initNotableFreq();
+        findMinAndMaxFreq();
     }
 
     public Word(double[][] spectrogram, WordRange wordRange){
@@ -46,7 +48,7 @@ public class Word {
                 if(spectrogram[i][k] >= 0.85){
                     if(k > maxFreq)
                         maxFreq = k;
-                    else if(k < minFreq && k != 0)
+                    if(k < minFreq && k != 0)
                         minFreq = k;
                 }
             }
