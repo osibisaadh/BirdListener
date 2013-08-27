@@ -82,50 +82,50 @@ public class Phrase {
 
         //0: WordNum || 1: length in miliseconds || 2-9: beginning word || 3: freqChangeDirection begin:mid || 4: frequencyChange begin:mid || 5: midFreq || 6: freqChangeDirection mid:end || 7: frequencyChange mid:end || 8:endFreq
         int WORD_NUM_INDEX = 0;
-        int MILISEC_INDEX = 1;
-        int BEGIN_FREQ_INDEX = 2;
-        int BEGIN_FREQ_1 = 3;
-        int BEGIN_FREQ_2 = 4;
-        int BEGIN_FREQ_3 = 5;
-        int BEGIN_FREQ_4 = 6;
-        int BEGIN_FREQ_5 = 7;
-        int BEGIN_FREQ_6 = 8;
-        int BEGIN_FREQ_7 = 9;
-        int BEGIN_FREQ_8 = 10;
-        int BEGIN_FREQ_9 = 11;
+//        int MILISEC_INDEX = 1;
+        int BEGIN_FREQ_INDEX = 1;
+        int BEGIN_FREQ_1 = 2;
+        int BEGIN_FREQ_2 = 3;
+        int BEGIN_FREQ_3 = 4;
+        int BEGIN_FREQ_4 = 5;
+        int BEGIN_FREQ_5 = 6;
+        int BEGIN_FREQ_6 = 7;
+        int BEGIN_FREQ_7 = 8;
+        int BEGIN_FREQ_8 = 9;
+        int BEGIN_FREQ_9 = 10;
 
-        int BEG_MID_DIRECTION_INDEX = 12;
-        int BEG_MID_CHANGE_INDEX = 13;
-        int MID_FREQ_INDEX = 14;
+        int BEG_MID_DIRECTION_INDEX = 11;
+        int BEG_MID_CHANGE_INDEX = 12;
+        int MID_FREQ_INDEX = 13;
 
-        int MID_FREQ_1 = 15;
-        int MID_FREQ_2 = 16;
-        int MID_FREQ_3 = 17;
-        int MID_FREQ_4 = 18;
-        int MID_FREQ_5 = 19;
-        int MID_FREQ_6 = 20;
-        int MID_FREQ_7 = 21;
-        int MID_FREQ_8 = 22;
-        int MID_FREQ_9 = 23;
+        int MID_FREQ_1 = 14;
+        int MID_FREQ_2 = 15;
+        int MID_FREQ_3 = 16;
+        int MID_FREQ_4 = 17;
+        int MID_FREQ_5 = 18;
+        int MID_FREQ_6 = 19;
+        int MID_FREQ_7 = 20;
+        int MID_FREQ_8 = 21;
+        int MID_FREQ_9 = 22;
 
-        int MID_END_DIRECTION_INDEX = 24;
-        int MID_END_CHANGE_INDEX = 25;
-        int END_FREQ_INDEX = 26;
+        int MID_END_DIRECTION_INDEX = 23;
+        int MID_END_CHANGE_INDEX = 24;
+        int END_FREQ_INDEX = 25;
 
-        int END_FREQ_1 = 27;
-        int END_FREQ_2 = 28;
-        int END_FREQ_3 = 29;
-        int END_FREQ_4 = 30;
-        int END_FREQ_5 = 31;
-        int END_FREQ_6 = 32;
-        int END_FREQ_7 = 33;
-        int END_FREQ_8 = 34;
-        int END_FREQ_9 = 35;
+        int END_FREQ_1 = 26;
+        int END_FREQ_2 = 27;
+        int END_FREQ_3 = 28;
+        int END_FREQ_4 = 29;
+        int END_FREQ_5 = 30;
+        int END_FREQ_6 = 31;
+        int END_FREQ_7 = 32;
+        int END_FREQ_8 = 33;
+        int END_FREQ_9 = 34;
 
-        int[] print = new int[36];
+        int[] print = new int[35];
 
         print[WORD_NUM_INDEX] = words.size();
-        print[MILISEC_INDEX] = lengthInMilisec;
+        //print[MILISEC_INDEX] = lengthInMilisec;
         print[BEGIN_FREQ_INDEX] = words.get(0).getPrint()[0];
         print[MID_FREQ_INDEX] = words.get(words.size()/2).getPrint()[0];
 

@@ -48,7 +48,7 @@ public class Word {
                 if(spectrogram[i][k] >= 0.85){
                     if(k > maxFreq)
                         maxFreq = k;
-                    if(k < minFreq && k != 0)
+                    if(k < minFreq)
                         minFreq = k;
                 }
             }
