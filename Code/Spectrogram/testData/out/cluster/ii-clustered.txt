@@ -1,4 +1,5 @@
-?"_Cluster 0:20-3729-01	16-3732-01
-Cluster 1:20-5139-11	
-Cluster 2:1-69-21	1-139-21	1-93-21	1-95-21	1-119-21	1-558-21	5-1152-21	1-564-21	1-500-21	
-Cluster 3:14-2847-31	2-1880-31	
+Cluster 0:Canyon Wren -- 1-01	Canyon Wren -- 3-01	Western Meadowlark -- 2-01	Western Meadowlark -- 3-01	Western Meadowlark -- 4-01	Northern Cardinal -- 2-01	
+Cluster 1:Canyon Wren -- 2-11	Canyon Wren -- 4-11	
+Cluster 2:Wood Thrush -- 1-21	Wood Thrush -- 3-21	
+Cluster 3:Wood Thrush -- 4-31	
+Cluster 4:Northern Cardinal -- 1-41	Northern Cardinal -- 3-41	Wood Thrush -- 2-41	

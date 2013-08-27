@@ -10,7 +10,7 @@ public class Test {
     public static void main(String[] args) {
         try{
             //Check out audio File info
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("testData\\1.wav"));
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("testData\\Canyon Wren -- 1.wav"));
             AudioFormat format = audioInputStream.getFormat();
             System.out.println("Channels: " + format.getChannels());
             System.out.println("Encoding: " + format.getEncoding());

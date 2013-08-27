@@ -34,33 +34,33 @@ public class GenerateSpectrograms {
         String fileName2 = "02 Canyon Wren";
         WaveFile waveFile2 = new WaveFile("testData\\" + fileName2 + ".wav");
         Spectrogram wavSpec2 = new Spectrogram(waveFile2);
-        FingerPrint fingerPrint2 = new FingerPrint(wavSpec2);
-        System.out.println("Phrases: " + fingerPrint2.getPhrases().size() + ", " + fingerPrint.getPhrases().size());
-        double similarity = fingerPrint.match(fingerPrint2);
-        System.out.println("Similarity: " + similarity );
+//        FingerPrint fingerPrint2 = new FingerPrint(wavSpec2);
+//        System.out.println("Phrases: " + fingerPrint2.getPhrases().size() + ", " + fingerPrint.getPhrases().size());
+//        double similarity = fingerPrint.match(fingerPrint2);
+//        System.out.println("Similarity: " + similarity );
         List<Phrase> phrases = fingerPrint.getPhrases();
 
         GraphicRender render = new GraphicRender();
-
-
-        //generates visual representation of each word extracted from the spectrogram
-
-        int index = 0;
-        for(Phrase p : fingerPrint.getPhrases()){
-            for(Word w : p.getWords()){
-                render.renderSpectrogramData(w.getSpectrogram(),"testData\\out\\fingerprint1\\" + fileName + index +".jpg");
-                index++;
-            }
-        }
+        render.renderSpectrogramData(wavSpec2.getSpectrogram(), "testData\\out\\" + "Canyon Wren -- 1" + ".jpg");
 
         //generates visual representation of each word extracted from the spectrogram
-        index = 0;
-        for(Phrase p : fingerPrint2.getPhrases()){
-            for(Word w : p.getWords()){
-                render.renderSpectrogramData(w.getSpectrogram(),"testData\\out\\fingerprint2\\" + 2 + index +".jpg");
-                index++;
-            }
-        }
+
+//        int index = 0;
+//        for(Phrase p : fingerPrint.getPhrases()){
+//            for(Word w : p.getWords()){
+//                render.renderSpectrogramData(w.getSpectrogram(),"testData\\out\\fingerprint1\\" + fileName + index +".jpg");
+//                index++;
+//            }
+//        }
+
+        //generates visual representation of each word extracted from the spectrogram
+//        index = 0;
+//        for(Phrase p : fingerPrint2.getPhrases()){
+//            for(Word w : p.getWords()){
+//                render.renderSpectrogramData(w.getSpectrogram(),"testData\\out\\fingerprint2\\" + 2 + index +".jpg");
+//                index++;
+//            }
+//        }
 
 
 
