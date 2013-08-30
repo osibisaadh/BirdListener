@@ -45,7 +45,7 @@ public class Word {
 
         for(int i =0; i < spectrogram.length; i ++){
             for(int k = 0; k < spectrogram[i].length; k++){
-                if(spectrogram[i][k] >= 0.85){
+                if(spectrogram[i][k] >= 0.80){
                     if(k > maxFreq)
                         maxFreq = k;
                     if(k < minFreq)

@@ -8,6 +8,7 @@ import com.tomgibara.cluster.gvm.intgr.IntResult;
 import fingerprint.FingerPrint;
 import spectrogram.Spectrogram;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +23,10 @@ import java.util.List;
 public class Driver {
     private static List<int[]> pts = new ArrayList<int[]>();
     private static List<String> names = new ArrayList<String>();
+    private static final String dirName = "testData\\DB";
 
     private static void createSpectrogram(String fileName){
-        WaveFile waveFile2 = new WaveFile("testData\\" + fileName + ".wav");
+        WaveFile waveFile2 = new WaveFile(dirName + "\\" + fileName + ".wav");
         Spectrogram wavSpec2 = new Spectrogram(waveFile2);
 
         GraphicRender render = new GraphicRender();
@@ -33,7 +35,7 @@ public class Driver {
 
     private static FingerPrint getFingerPrint(String fileName){
 
-        WaveFile waveFile = new WaveFile("testData\\1Phrase\\" + fileName + ".wav");
+        WaveFile waveFile = new WaveFile(dirName + "\\" + fileName + ".wav");
         Spectrogram wavSpec = new Spectrogram(waveFile);
         FingerPrint fingerPrint = new FingerPrint(wavSpec);
         return fingerPrint;
@@ -42,107 +44,24 @@ public class Driver {
     public static void main(String[] args) {
         try{
 
+            File dir = new File(dirName);
 
-            String fileName2;
-            fileName2 = "Canyon Wren -- 1";
-            FingerPrint fingerPrint = getFingerPrint(fileName2);
-            names.add(fileName2);
-            addPoints(fingerPrint.getPrint());
-            createSpectrogram(fileName2);
+            if(dir.isDirectory()){
+                for(File file : dir.listFiles()){
+                    String fileName = file.getName().split("\\.")[0];
+                    FingerPrint fingerPrint = getFingerPrint(fileName);
+                    names.add(fileName);
+                    addPoints(fingerPrint.getPrint());
+                    createSpectrogram(fileName);
+                }
+            }
 
-            fileName2 = "Canyon Wren -- 2";
-            fingerPrint = getFingerPrint(fileName2);
-            names.add(fileName2);
-            addPoints(fingerPrint.getPrint());
-            createSpectrogram(fileName2);
-
-            fileName2 = "Canyon Wren -- 3";
-            fingerPrint = getFingerPrint(fileName2);
-            names.add(fileName2);
-            addPoints(fingerPrint.getPrint());
-            createSpectrogram(fileName2);
-
-            fileName2 = "Canyon Wren -- 4";
-            fingerPrint = getFingerPrint(fileName2);
-            names.add(fileName2);
-            addPoints(fingerPrint.getPrint());
-            createSpectrogram(fileName2);
-
-            fileName2 = "Northern Cardinal -- 1";
-            fingerPrint = getFingerPrint(fileName2);
-            names.add(fileName2);
-            addPoints(fingerPrint.getPrint());
-            createSpectrogram(fileName2);
-
-            fileName2 = "Northern Cardinal -- 2";
-            fingerPrint = getFingerPrint(fileName2);
-            names.add(fileName2);
-            addPoints(fingerPrint.getPrint());
-            createSpectrogram(fileName2);
-
-            fileName2 = "Northern Cardinal -- 3";
-            fingerPrint = getFingerPrint(fileName2);
-            names.add(fileName2);
-            addPoints(fingerPrint.getPrint());
-            createSpectrogram(fileName2);
-
-//            fileName2 = "Wood Thrush -- 5";
-//            fingerPrint = getFingerPrint(fileName2);
-//            addPoints(fingerPrint.getPrint());
-
-
-            fileName2 = "Western Meadowlark -- 2";
-            fingerPrint = getFingerPrint(fileName2);
-            names.add(fileName2);
-            addPoints(fingerPrint.getPrint());
-            createSpectrogram(fileName2);
-
-            fileName2 = "Western Meadowlark -- 3";
-            fingerPrint = getFingerPrint(fileName2);
-            names.add(fileName2);
-            addPoints(fingerPrint.getPrint());
-            createSpectrogram(fileName2);
-
-            fileName2 = "Western Meadowlark -- 4";
-            fingerPrint = getFingerPrint(fileName2);
-            names.add(fileName2);
-            addPoints(fingerPrint.getPrint());
-            createSpectrogram(fileName2);
-
-            fileName2 = "Wood Thrush -- 1";
-            fingerPrint = getFingerPrint(fileName2);
-            names.add(fileName2);
-            addPoints(fingerPrint.getPrint());
-            createSpectrogram(fileName2);
-
-            fileName2 = "Wood Thrush -- 2";
-            fingerPrint = getFingerPrint(fileName2);
-            names.add(fileName2);
-            addPoints(fingerPrint.getPrint());
-            createSpectrogram(fileName2);
-
-//            fileName2 = "06 White-throated Sparrow";
-//            fingerPrint = getFingerPrint(fileName2);
-//            addPoints(fingerPrint.getPrint());
-
-            fileName2 = "Wood Thrush -- 3";
-            fingerPrint = getFingerPrint(fileName2);
-            names.add(fileName2);
-            addPoints(fingerPrint.getPrint());
-            createSpectrogram(fileName2);
-//
-            fileName2 = "Wood Thrush -- 4";
-            fingerPrint = getFingerPrint(fileName2);
-            names.add(fileName2);
-            addPoints(fingerPrint.getPrint());
-            createSpectrogram(fileName2);
-
-
-            IntClusters <List<String>> clusters = new IntClusters<List<String>>(35, 5);
+            IntClusters <List<String>> clusters = new IntClusters<List<String>>(35, 7);
             clusters.setKeyer(new IntListKeyer<String>());
             int count = 0;
             for (int[] pt : pts) {
                 ArrayList<String> key = new ArrayList<String>();
+                System.out.println("Count: " + count + "\t Max: " + pts.size());
                 key.add(names.get(count));
                 clusters.add(1, pt, key);
                 count++;
@@ -152,9 +71,10 @@ public class Driver {
             final List<IntResult<List<String>>> results = clusters.results();
             System.out.println(results.size());
             for (int i = 0; i < results.size(); i++) {
+                System.out.println("Cluster: " + i + ": " + "Size - " + results.get(i).getKey().size());
                 writer.write("Cluster " + i + ":");
                 for (String pt : results.get(i).getKey()) {
-                    writer.write(pt +  "-"  + i+1 + "\t");
+                    writer.write(pt +  "\t");
                 }
                writer.write("\n");
             }
