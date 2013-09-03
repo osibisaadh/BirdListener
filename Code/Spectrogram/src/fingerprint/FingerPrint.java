@@ -151,8 +151,8 @@ public class FingerPrint {
     }
 
     private int findEndPoint(int start){
-        int end =0;
-        for(int i = start; i < data.length && end == 0; i++){
+        int end = start;
+        for(int i = start; i < data.length; i++){
             double maxAmp = 0.0;
             for(int j = 0; j < data[i].length; j++){
                 if(data[i][j] > maxAmp)
