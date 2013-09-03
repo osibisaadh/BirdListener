@@ -82,68 +82,68 @@ public class Phrase {
 
         //0: WordNum || 1: length in miliseconds || 2-9: beginning word || 3: freqChangeDirection begin:mid || 4: frequencyChange begin:mid || 5: midFreq || 6: freqChangeDirection mid:end || 7: frequencyChange mid:end || 8:endFreq
         int WORD_NUM_INDEX = 0;
-        int MILISEC_INDEX = 1;
-        int BEGIN_FREQ_INDEX = 2;
-//        int BEGIN_FREQ_1 = 2;
-//        int BEGIN_FREQ_2 = 3;
-//        int BEGIN_FREQ_3 = 4;
-//        int BEGIN_FREQ_4 = 5;
+//        int MILISEC_INDEX = 1;
+        int BEGIN_FREQ_INDEX = 1;
+        int BEGIN_FREQ_1 = 2;
+        int BEGIN_FREQ_2 = 3;
+        int BEGIN_FREQ_3 = 4;
+        int BEGIN_FREQ_4 = 5;
 //        int BEGIN_FREQ_5 = 6;
 //        int BEGIN_FREQ_6 = 7;
 //        int BEGIN_FREQ_7 = 8;
 //        int BEGIN_FREQ_8 = 9;
 //        int BEGIN_FREQ_9 = 10;
 
-        int BEG_MID_DIRECTION_INDEX = 3;
-        int BEG_MID_CHANGE_INDEX = 4;
-        int MID_FREQ_INDEX = 5;
+        int BEG_MID_DIRECTION_INDEX = 6;
+        int BEG_MID_CHANGE_INDEX = 7;
+        int MID_FREQ_INDEX = 8;
 
-//        int MID_FREQ_1 = 14;
-//        int MID_FREQ_2 = 15;
-//        int MID_FREQ_3 = 16;
-//        int MID_FREQ_4 = 17;
-//        int MID_FREQ_5 = 18;
-//        int MID_FREQ_6 = 19;
-//        int MID_FREQ_7 = 20;
+        int MID_FREQ_1 = 9;
+        int MID_FREQ_2 = 10;
+        int MID_FREQ_3 = 11;
+        int MID_FREQ_4 = 12;
+//        int MID_FREQ_5 = 16;
+//        int MID_FREQ_6 = 17;
+//        int MID_FREQ_7 = 18;
 //        int MID_FREQ_8 = 21;
 //        int MID_FREQ_9 = 22;
 
-        int MID_END_DIRECTION_INDEX = 6;
-        int MID_END_CHANGE_INDEX = 7;
-        int END_FREQ_INDEX = 8;
+        int MID_END_DIRECTION_INDEX = 13;
+        int MID_END_CHANGE_INDEX = 14;
+        int END_FREQ_INDEX = 15;
 
-//        int END_FREQ_1 = 26;
-//        int END_FREQ_2 = 27;
-//        int END_FREQ_3 = 28;
-//        int END_FREQ_4 = 29;
-//        int END_FREQ_5 = 30;
-//        int END_FREQ_6 = 31;
-//        int END_FREQ_7 = 32;
+        int END_FREQ_1 = 16;
+        int END_FREQ_2 = 17;
+        int END_FREQ_3 = 18;
+        int END_FREQ_4 = 19;
+//        int END_FREQ_5 = 20;
+//        int END_FREQ_6 = 21;
+//        int END_FREQ_7 = 22;
 //        int END_FREQ_8 = 33;
 //        int END_FREQ_9 = 34;
 
-        int[] print = new int[9];
+        int[] print = new int[20];
 
         print[WORD_NUM_INDEX] = words.size();
-        print[MILISEC_INDEX] = lengthInMilisec;
+        //print[MILISEC_INDEX] = lengthInMilisec;
         print[BEGIN_FREQ_INDEX] = words.get(0).getPrint()[0];
         print[MID_FREQ_INDEX] = words.get(words.size()/2).getPrint()[0];
-//
-//        print[BEGIN_FREQ_1] = words.get(0).getPrint()[1];
-//        print[BEGIN_FREQ_2] = words.get(0).getPrint()[2];
-//        print[BEGIN_FREQ_3] = words.get(0).getPrint()[3];
-//        print[BEGIN_FREQ_4] = words.get(0).getPrint()[4];
+
+        print[BEGIN_FREQ_1] = words.get(0).getPrint()[1];
+        print[BEGIN_FREQ_2] = words.get(0).getPrint()[2];
+        print[BEGIN_FREQ_3] = words.get(0).getPrint()[3];
+        print[BEGIN_FREQ_4] = words.get(0).getPrint()[4];
 //        print[BEGIN_FREQ_5] = words.get(0).getPrint()[5];
 //        print[BEGIN_FREQ_6] = words.get(0).getPrint()[6];
 //        print[BEGIN_FREQ_7] = words.get(0).getPrint()[7];
 //        print[BEGIN_FREQ_8] = words.get(0).getPrint()[8];
 //        print[BEGIN_FREQ_9] = words.get(0).getPrint()[9];
-//
-//
-//        print[MID_FREQ_1] = words.get(words.size()/2).getPrint()[1];
-//        print[MID_FREQ_2] = words.get(words.size()/2).getPrint()[2];
-//        print[MID_FREQ_3] = words.get(words.size()/2).getPrint()[3];
-//        print[MID_FREQ_4] = words.get(words.size()/2).getPrint()[4];
+
+
+        print[MID_FREQ_1] = words.get(words.size()/2).getPrint()[1];
+        print[MID_FREQ_2] = words.get(words.size()/2).getPrint()[2];
+        print[MID_FREQ_3] = words.get(words.size()/2).getPrint()[3];
+        print[MID_FREQ_4] = words.get(words.size()/2).getPrint()[4];
 //        print[MID_FREQ_5] = words.get(words.size()/2).getPrint()[5];
 //        print[MID_FREQ_6] = words.get(words.size()/2).getPrint()[6];
 //        print[MID_FREQ_7] = words.get(words.size()/2).getPrint()[7];
@@ -155,17 +155,17 @@ public class Phrase {
         print[BEG_MID_CHANGE_INDEX] = Math.abs( print[BEGIN_FREQ_INDEX]- print[MID_FREQ_INDEX]);
         print[END_FREQ_INDEX] = words.get(words.size()-1).getPrint()[0];
 
-//        print[END_FREQ_1] = words.get(words.size()-1).getPrint()[1];
-//        print[END_FREQ_2] = words.get(words.size()-1).getPrint()[2];
-//        print[END_FREQ_3] = words.get(words.size()-1).getPrint()[3];
-//        print[END_FREQ_4] = words.get(words.size()-1).getPrint()[4];
+        print[END_FREQ_1] = words.get(words.size()-1).getPrint()[1];
+        print[END_FREQ_2] = words.get(words.size()-1).getPrint()[2];
+        print[END_FREQ_3] = words.get(words.size()-1).getPrint()[3];
+        print[END_FREQ_4] = words.get(words.size()-1).getPrint()[4];
 //        print[END_FREQ_5] = words.get(words.size()-1).getPrint()[5];
 //        print[END_FREQ_6] = words.get(words.size()-1).getPrint()[6];
 //        print[END_FREQ_7] = words.get(words.size()-1).getPrint()[7];
 //        print[END_FREQ_8] = words.get(words.size()-1).getPrint()[8];
 //        print[END_FREQ_9] = words.get(words.size()-1).getPrint()[9];
-//
-//
+
+
 
         print[MID_END_DIRECTION_INDEX] = getDirection(print[MID_FREQ_INDEX], print[END_FREQ_INDEX]).ordinal();
         print[MID_END_CHANGE_INDEX] = Math.abs(print[MID_FREQ_INDEX] - print[END_FREQ_INDEX]);

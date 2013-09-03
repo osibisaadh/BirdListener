@@ -26,6 +26,7 @@ public class Word {
     private FreqDirection direction;
     private int[] notableFreq = new int[NUM_OF_FREQUENCIES];
     private String textRepresentation;
+    private WordType wordtype = WordType.Note;
 
     public Word(double[][] spectrogram){
         this.spectrogram = spectrogram;
@@ -58,9 +59,12 @@ public class Word {
     private void initNotableFreq(){
         int maxAmpIndex = 0;
         //most intense freq at beginning
-        for(int i = 0; i < spectrogram[0].length; i++){
-            if(spectrogram[0][i] > spectrogram[0][maxAmpIndex])
+        int highAmpCount = 0;
+        for(int i = 1; i < spectrogram[5].length; i++){
+            if(spectrogram[5][i] > spectrogram[5][maxAmpIndex])
                 maxAmpIndex = i;
+            if(spectrogram[5][i] > 0.70)
+                highAmpCount++;
         }
         notableFreq[0] = maxAmpIndex;
 
@@ -69,17 +73,28 @@ public class Word {
         for(int i = 0; i < spectrogram[spectrogram.length/2].length; i++){
             if(spectrogram[spectrogram.length/2][i] > spectrogram[spectrogram.length/2][maxAmpIndex])
                 maxAmpIndex = i;
+            if(spectrogram[spectrogram.length/2][i] > 0.70)
+                highAmpCount++;
         }
         notableFreq[1] = maxAmpIndex;
 
         maxAmpIndex = 0;
         //Most intense freq at end.
 
-        for(int i = 0; i < spectrogram[spectrogram.length-1].length; i++){
-            if(spectrogram[spectrogram.length-1][i] > spectrogram[spectrogram.length-1][maxAmpIndex])
+        for(int i = 0; i < spectrogram[spectrogram.length-5].length; i++){
+            if(spectrogram[spectrogram.length-5][i] > spectrogram[spectrogram.length-5][maxAmpIndex])
                 maxAmpIndex = i;
+            if(spectrogram[spectrogram.length-5][i] > 0.70)
+                highAmpCount++;
         }
         notableFreq[2] = maxAmpIndex;
+
+        if(highAmpCount/3 > 10){
+            wordtype = WordType.Screech;
+        }
+
+
+
     }
 
     public double match(Word word){
@@ -110,17 +125,15 @@ public class Word {
     }
 
     public int[] getPrint(){
-        int[] print = new int[10];
-        print[0] = notableFreq[0];
-        print[1] = getDirection(notableFreq[0], notableFreq[1]).ordinal();
-        print[2] = notableFreq[1];
-        print[3] = getDirection(notableFreq[1], notableFreq[2]).ordinal();
-        print[4] = notableFreq[2];
-        print[5] = maxFreq;
-        print[6] = minFreq;
-        print[7] = lengthInMiliSec;
-        print[8] = Math.abs(notableFreq[1] - notableFreq[0]);
-        print[9] = Math.abs(notableFreq[1] - notableFreq[2]);
+        int[] print = new int[5];
+//        print[0] = notableFreq[0];
+        print[0] = getDirection(notableFreq[0], notableFreq[1]).ordinal();
+//        print[2] = notableFreq[1];
+        print[1] = getDirection(notableFreq[1], notableFreq[2]).ordinal();
+//        print[4] = notableFreq[2];
+        print[2] = wordtype.value();
+        print[3] = Math.abs(notableFreq[1] - notableFreq[0]);
+        print[4] = Math.abs(notableFreq[1] - notableFreq[2]);
         return print;
     }
 
