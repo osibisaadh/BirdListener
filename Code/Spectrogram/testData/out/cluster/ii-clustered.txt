@@ -1,7 +1,9 @@
-Cluster 0:Wood Thrush -- 1	Wood Thrush -- 4	
-Cluster 1:Red-Tailed Hawk -- 2	
-Cluster 2:Northern Cardinal -- 3	Northern Cardinal -- 2	Northern Cardinal -- 5	Northern Cardinal -- 4	Western Meadowlark -- 1	Western Meadowlark -- 2	Western Meadowlark -- 3	Western Meadowlark -- 4	Western Meadowlark -- 6	Canada Goose -- 1	Canada Goose -- 2	Canada Goose -- 3	Canada Goose -- 4	Wood Thrush -- 5	
-Cluster 3:Canyon Wren -- 3	Canyon Wren -- 5	Canyon Wren -- 1	Canyon Wren -- 6	Canyon Wren -- 2	
-Cluster 4:Canada Goose -- 5	Northern Cardinal -- 1	Red-Tailed Hawk -- 3	Western Screech Owl -- 1	Western Screech Owl -- 2	Western Screech Owl -- 7	Western Screech Owl -- 8	Western Screech Owl -- 9	
-Cluster 5:Red-Tailed Hawk -- 1	Red-Tailed Hawk -- 7	Red-Tailed Hawk -- 4	
-Cluster 6:Wood Thrush -- 2	Wood Thrush -- 3	
+Cluster 0:Common Raven -- 10	Common Raven -- 5	Canyon Wren -- 2	Northern Cardinal -- 5	Red-Tailed Hawk -- 3	Red-Tailed Hawk -- 4	Red-Tailed Hawk -- 7	
+Cluster 1:Canada Goose -- 2	Canada Goose -- 3	Canada Goose -- 4	Canada Goose -- 1	Canada Goose -- 5	
+Cluster 2:Canyon Wren -- 6	Canyon Wren -- 5	
+Cluster 3:Common Raven -- 1	
+Cluster 4:Common Raven -- 6	Northern Cardinal -- 1	Canyon Wren -- 1	Northern Cardinal -- 2	
+Cluster 5:Plumbeous Pigeon -- 10	Plumbeous Pigeon -- 7	Red-Tailed Hawk -- 1	Western Screech Owl -- 2	Western Screech Owl -- 7	Western Screech Owl -- 8	Western Screech Owl -- 9	Wood Thrush -- 3	Wood Thrush -- 4	Wood Thrush -- 5	
+Cluster 6:Plumbeous Pigeon -- 1	Plumbeous Pigeon -- 2	Plumbeous Pigeon -- 6	Western Meadowlark -- 1	Western Meadowlark -- 2	Western Meadowlark -- 3	Western Meadowlark -- 4	Wood Thrush -- 1	Wood Thrush -- 2	
+Cluster 7:Canyon Wren -- 3	
+Cluster 8:Common Raven -- 4	Northern Cardinal -- 3	Northern Cardinal -- 4	Red-Tailed Hawk -- 2	Western Meadowlark -- 6	Western Screech Owl -- 1	
