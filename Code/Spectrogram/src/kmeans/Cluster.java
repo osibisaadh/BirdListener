@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class Cluster{
     private int dimensions = 0;
-    private List<int[]> points = new ArrayList<int[]>();
+    private List<Item> points = new ArrayList<Item>();
     private int[] centerPoint;
 
     public Cluster(){
@@ -24,15 +24,31 @@ public class Cluster{
         centerPoint = new int[dimensions];
     }
 
-    public void computeCenter(){
-
+    public boolean computeCenter(){
+        boolean changed = false;
+        int[] newCenter = new int[centerPoint.length];
+        for(int k = 0; k < newCenter.length; k++){
+            for(int i = 0; i < points.size();i++){
+                newCenter[k] += points.get(i).getItem()[k];
+            }
+            newCenter[k] /= dimensions;
+            if(!changed){
+                if(newCenter[k] != centerPoint[k])
+                    changed = true;
+            }
+        }
+        return changed;
     }
 
-    public boolean addPoint( int[] point){
+    public void resetPoints(){
+        points = new ArrayList<Item>();
+    }
+
+    public boolean addPoint( Item point){
         return points.add(point);
     }
 
-    public boolean removePoint( int[] point){
+    public boolean removePoint( Item point){
         return points.remove(point);
     }
 
@@ -44,11 +60,11 @@ public class Cluster{
         this.dimensions = dimensions;
     }
 
-    public List<int[]> getPoints() {
+    public List<Item> getPoints() {
         return points;
     }
 
-    public void setPoints(List<int[]> points) {
+    public void setPoints(List<Item> points) {
         this.points = points;
     }
 

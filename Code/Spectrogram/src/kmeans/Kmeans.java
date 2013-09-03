@@ -15,7 +15,7 @@ public class Kmeans{
     private List<Cluster> clusters;
     private int clusterNum;
     private int dimensions = 0;
-    private List<int[]> items = new ArrayList<int[]>();
+    private List<Item> items = new ArrayList<Item>();
     private Random random = new Random();
 
     public Kmeans(int dimensions,int clusterNum){
@@ -24,41 +24,54 @@ public class Kmeans{
         clusters = new ArrayList<Cluster>();
     }
 
-    private List<int[]> getCopyOfItems(){
-        List<int[]> newList = new ArrayList<int[]>();
-        for(int[] pt : items){
+    private List<Item> getCopyOfItems(){
+        List<Item> newList = new ArrayList<Item>();
+        for(Item pt : items){
             newList.add(pt);
         }
         return newList;
     }
 
     public void init(){
-        List<int[]> tempitems = getCopyOfItems();
+        List<Item> tempitems = getCopyOfItems();
         for(int i = 0; i < clusterNum; i++){
             Cluster cluster = new Cluster(dimensions);
             int randomPoint = random.nextInt(tempitems.size());
-            cluster.setCenterPoint(tempitems.get(randomPoint));
+            cluster.setCenterPoint(tempitems.get(randomPoint).getItem());
             tempitems.remove(randomPoint);
             clusters.add(cluster);
+        }
+    }
+
+    private void reinitClusters(){
+        for(int i = 0; i < clusters.size(); i++){
+            clusters.get(i).resetPoints();
         }
     }
 
     public void run(){
         init();
         for(int i = 0; i < items.size(); i++){
-            findMinDistance(items.get(i),null);
+            findMinDistance(items.get(i));
         }
         boolean changed = true;
         while(changed){
             changed = false;
+            for(int i =0; i < clusters.size(); i++){
+                if(changed)
+                    changed = clusters.get(i).computeCenter();
+                else
+                    clusters.get(i).computeCenter();
+            }
+            reinitClusters();
             for(int i =0; i < items.size(); i++){
-
+                findMinDistance(items.get(i));
             }
         }
 
     }
 
-    public boolean addItems(int[][] items){
+    public boolean addItems(Item[] items){
         boolean addedall = true;
         for(int i = 0; i < items.length; i++){
             if(addedall){
@@ -68,24 +81,24 @@ public class Kmeans{
         return addedall;
     }
 
-    private void findMinDistance(int[] item, Cluster previousCluster){
-        double minDistance = Double.MAX_VALUE;
+    private void findMinDistance(Item item){
+        double minDistance = Integer.MAX_VALUE;
         int minDistanceIndex = 0;
         for(int i = 0; i <clusters.size(); i++){
-            double distance = getDistance(item, clusters.get(i).getCenterPoint());
+            double distance = getDistance(item.getItem(), clusters.get(i).getCenterPoint());
             if(minDistance > distance){
                 minDistance = distance;
                 minDistanceIndex = i;
             }
         }
         clusters.get(minDistanceIndex).addPoint(item);
-        if(previousCluster != null){
-            previousCluster.removePoint(item);
-        }
+//        if(previousCluster != null){
+//            previousCluster.removePoint(item);
+//        }
     }
 
 
-    public boolean addItem(int[] item){
+    public boolean addItem(Item item){
         boolean added = items.add(item);
 
         return added;
@@ -96,9 +109,9 @@ public class Kmeans{
         double distance = 0;
         for(int i = 0; i < point.length; i++){
             distanceArray[i] = point[i] - center[i];
-            distance += distanceArray[i];
+            distance += Math.pow((double)distanceArray[i],2.0);
         }
-        return distance;
+        return Math.sqrt(distance);
     }
 
     public List<Cluster> getClusters() {
@@ -125,11 +138,11 @@ public class Kmeans{
         this.dimensions = dimensions;
     }
 
-    public List<int[]> getItems() {
+    public List<Item> getItems() {
         return items;
     }
 
-    public void setItems(List<int[]> items) {
+    public void setItems(List<Item> items) {
         this.items = items;
     }
 }
