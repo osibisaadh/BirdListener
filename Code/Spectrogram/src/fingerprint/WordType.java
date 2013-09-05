@@ -8,7 +8,7 @@ package fingerprint;
  * To change this template use File | Settings | File Templates.
  */
 public enum WordType {
-    Screech(100),Note(0);
+    Screech(200),Note(100);
 
     private int value;
     WordType(int value) {

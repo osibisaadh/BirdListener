@@ -13,6 +13,7 @@ import java.util.List;
 
 
 public class Word {
+    public static final double AMP_THRESHHOLD = 0.80;
     private  final int MAX_FREQ_DIFF = 30;
     private final int MAX_NOTABLE_FREQ_DIFF = 10;
     private final int MAX_LENGTH_DIFF = 10;
@@ -46,7 +47,7 @@ public class Word {
 
         for(int i =0; i < spectrogram.length; i ++){
             for(int k = 0; k < spectrogram[i].length; k++){
-                if(spectrogram[i][k] >= 0.80){
+                if(spectrogram[i][k] >= AMP_THRESHHOLD){
                     if(k > maxFreq)
                         maxFreq = k;
                     if(k < minFreq)
@@ -63,7 +64,7 @@ public class Word {
         for(int i = 1; i < spectrogram[5].length; i++){
             if(spectrogram[5][i] > spectrogram[5][maxAmpIndex])
                 maxAmpIndex = i;
-            if(spectrogram[5][i] > 0.70)
+            if(spectrogram[5][i] > AMP_THRESHHOLD)
                 highAmpCount++;
         }
         notableFreq[0] = maxAmpIndex;
@@ -73,7 +74,7 @@ public class Word {
         for(int i = 0; i < spectrogram[spectrogram.length/2].length; i++){
             if(spectrogram[spectrogram.length/2][i] > spectrogram[spectrogram.length/2][maxAmpIndex])
                 maxAmpIndex = i;
-            if(spectrogram[spectrogram.length/2][i] > 0.70)
+            if(spectrogram[spectrogram.length/2][i] > AMP_THRESHHOLD)
                 highAmpCount++;
         }
         notableFreq[1] = maxAmpIndex;
@@ -84,7 +85,7 @@ public class Word {
         for(int i = 0; i < spectrogram[spectrogram.length-5].length; i++){
             if(spectrogram[spectrogram.length-5][i] > spectrogram[spectrogram.length-5][maxAmpIndex])
                 maxAmpIndex = i;
-            if(spectrogram[spectrogram.length-5][i] > 0.70)
+            if(spectrogram[spectrogram.length-5][i] > AMP_THRESHHOLD)
                 highAmpCount++;
         }
         notableFreq[2] = maxAmpIndex;
@@ -127,9 +128,9 @@ public class Word {
     public int[] getPrint(){
         int[] print = new int[5];
 //        print[0] = notableFreq[0];
-        print[0] = getDirection(notableFreq[0], notableFreq[1]).ordinal();
+        print[0] = getDirection(notableFreq[0], notableFreq[1]).value();
 //        print[2] = notableFreq[1];
-        print[1] = getDirection(notableFreq[1], notableFreq[2]).ordinal();
+        print[1] = getDirection(notableFreq[1], notableFreq[2]).value();
 //        print[4] = notableFreq[2];
         print[2] = wordtype.value();
         print[3] = Math.abs(notableFreq[1] - notableFreq[0]);

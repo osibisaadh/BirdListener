@@ -8,5 +8,14 @@ package fingerprint;
  * To change this template use File | Settings | File Templates.
  */
 public enum FreqDirection {
-    Down, Even, Up;
+    Down(50), Even(100), Up(150), None(0);
+
+    private int value;
+    FreqDirection(int value) {
+        this.value = value;
+    }
+
+    public int value() {
+        return value;
+    }
 }
