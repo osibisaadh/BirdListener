@@ -10,38 +10,42 @@ import java.util.List;
  * Time: 3:01 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Cluster{
+public class Cluster<T extends Number> {
     private int dimensions = 0;
-    private List<Item> points = new ArrayList<Item>();
-    private int[] centerPoint;
+    protected List<Item<T>> points = new ArrayList<Item<T>>();
+    private T[] centerPoint;
 
     public Cluster(){
-        centerPoint = new int[dimensions];
+        centerPoint = (T[])new Number[dimensions];
     }
 
     public Cluster(int dimensions){
         this.dimensions = dimensions;
-        centerPoint = new int[dimensions];
+        centerPoint = (T[])new Number[dimensions];
     }
 
     public boolean computeCenter(){
         boolean changed = false;
-        int[] newCenter = new int[centerPoint.length];
+        Number[] newCenter = new Number[centerPoint.length];
+        for(int i = 0; i < newCenter.length;i++){
+            newCenter[i] = new Integer(0);
+        }
         for(int k = 0; k < newCenter.length; k++){
             for(int i = 0; i < points.size();i++){
-                newCenter[k] += points.get(i).getItem()[k];
+                newCenter[k] = newCenter[k].doubleValue() + points.get(i).getItem()[k].doubleValue();
             }
-            newCenter[k] /= dimensions;
+            newCenter[k] = newCenter[k].doubleValue()/points.size();
             if(!changed){
-                if(newCenter[k] != centerPoint[k])
+                if(!newCenter[k].equals(centerPoint[k]))
                     changed = true;
             }
         }
+        centerPoint = (T[])newCenter;
         return changed;
     }
 
     public void resetPoints(){
-        points = new ArrayList<Item>();
+        points = new ArrayList<Item<T>>();
     }
 
     public boolean addPoint( Item point){
@@ -60,19 +64,19 @@ public class Cluster{
         this.dimensions = dimensions;
     }
 
-    public List<Item> getPoints() {
+    public List<Item<T>> getPoints() {
         return points;
     }
 
-    public void setPoints(List<Item> points) {
+    public void setPoints(List<Item<T>> points) {
         this.points = points;
     }
 
-    public int[] getCenterPoint() {
+    public T[] getCenterPoint() {
         return centerPoint;
     }
 
-    public void setCenterPoint(int[] centerPoint) {
+    public void setCenterPoint(T[] centerPoint) {
         this.centerPoint = centerPoint;
     }
 }

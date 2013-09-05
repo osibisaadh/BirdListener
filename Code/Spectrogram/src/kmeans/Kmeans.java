@@ -11,31 +11,33 @@ import java.util.Random;
  * Time: 3:01 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Kmeans{
-    private List<Cluster> clusters;
+public class Kmeans<T extends Number>{
+    private double MAX_DOUBLE = 999999.9;
+    private List<Cluster<T>> clusters;
     private int clusterNum;
     private int dimensions = 0;
-    private List<Item> items = new ArrayList<Item>();
+    private List<Item<T>> items = new ArrayList<Item<T>>();
     private Random random = new Random();
 
     public Kmeans(int dimensions,int clusterNum){
         this.clusterNum = clusterNum;
         this.dimensions = dimensions;
-        clusters = new ArrayList<Cluster>();
+        clusters = new ArrayList<Cluster<T>>();
     }
 
-    private List<Item> getCopyOfItems(){
-        List<Item> newList = new ArrayList<Item>();
-        for(Item pt : items){
+    private List<Item<T>> getCopyOfItems(){
+        List<Item<T>> newList = new ArrayList<Item<T>>();
+        for(Item<T> pt : items){
             newList.add(pt);
         }
         return newList;
     }
 
     public void init(){
-        List<Item> tempitems = getCopyOfItems();
+        List<Item<T>> tempitems = getCopyOfItems();
+
         for(int i = 0; i < clusterNum; i++){
-            Cluster cluster = new Cluster(dimensions);
+            Cluster<T> cluster = new Cluster<T>(dimensions);
             int randomPoint = random.nextInt(tempitems.size());
             cluster.setCenterPoint(tempitems.get(randomPoint).getItem());
             tempitems.remove(randomPoint);
@@ -50,28 +52,34 @@ public class Kmeans{
     }
 
     public void run(){
+        int changedCount = 0;
         init();
         for(int i = 0; i < items.size(); i++){
             findMinDistance(items.get(i));
         }
         boolean changed = true;
-        while(changed){
-            changed = false;
+
+        while(changedCount < 5){
             for(int i =0; i < clusters.size(); i++){
                 if(changed)
                     changed = clusters.get(i).computeCenter();
                 else
                     clusters.get(i).computeCenter();
+                System.out.println("Cluster " + i + ": " + "c1-" +clusters.get(i).getCenterPoint()[0]+ " c2-" +clusters.get(i).getCenterPoint()[1] );
             }
             reinitClusters();
             for(int i =0; i < items.size(); i++){
                 findMinDistance(items.get(i));
             }
+            if(changed == false){
+                changedCount++;
+                changed = true;
+            }
         }
 
     }
 
-    public boolean addItems(Item[] items){
+    public boolean addItems(Item<T>[] items){
         boolean addedall = true;
         for(int i = 0; i < items.length; i++){
             if(addedall){
@@ -81,13 +89,13 @@ public class Kmeans{
         return addedall;
     }
 
-    private void findMinDistance(Item item){
-        double minDistance = Integer.MAX_VALUE;
+    private void findMinDistance(Item<T> item){
+        double minDistance = MAX_DOUBLE;
         int minDistanceIndex = 0;
         for(int i = 0; i <clusters.size(); i++){
             double distance = getDistance(item.getItem(), clusters.get(i).getCenterPoint());
             if(minDistance > distance){
-                minDistance = distance;
+                minDistance = (double)distance;
                 minDistanceIndex = i;
             }
         }
@@ -98,27 +106,27 @@ public class Kmeans{
     }
 
 
-    public boolean addItem(Item item){
+    public boolean addItem(Item<T> item){
         boolean added = items.add(item);
 
         return added;
     }
 
-    public double getDistance(int[] point, int[] center){
-        int[] distanceArray = new int[point.length];
+    public double getDistance(T[] point, T[] center){
+        double[] distanceArray = new double[point.length];
         double distance = 0;
         for(int i = 0; i < point.length; i++){
-            distanceArray[i] = point[i] - center[i];
-            distance += Math.pow((double)distanceArray[i],2.0);
+            distanceArray[i] = point[i].doubleValue() - center[i].doubleValue();
+            distance += Math.pow(distanceArray[i], 2.0);
         }
         return Math.sqrt(distance);
     }
 
-    public List<Cluster> getClusters() {
+    public List<Cluster<T>> getClusters() {
         return clusters;
     }
 
-    public void setClusters(List<Cluster> clusters) {
+    public void setClusters(List<Cluster<T>> clusters) {
         this.clusters = clusters;
     }
 
@@ -138,11 +146,11 @@ public class Kmeans{
         this.dimensions = dimensions;
     }
 
-    public List<Item> getItems() {
+    public List<Item<T>> getItems() {
         return items;
     }
 
-    public void setItems(List<Item> items) {
+    public void setItems(List<Item<T>> items) {
         this.items = items;
     }
 }

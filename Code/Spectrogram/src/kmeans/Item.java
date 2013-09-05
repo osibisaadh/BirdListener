@@ -7,21 +7,21 @@ package kmeans;
  * Time: 12:23 AM
  * To change this template use File | Settings | File Templates.
  */
-public class Item {
-    private int[] item;
-    private String key;
-    private double distance;
+public class Item<T extends Number>{
+    protected T[] item;
+    protected String key;
+    protected double distance;
 
-    public Item(int[] item, String key){
+    public Item(T[] item, String key){
         this.item = item;
         this.key = key;
     }
 
-    public int[] getItem() {
+    public T[] getItem() {
         return item;
     }
 
-    public void setItem(int[] item) {
+    public void setItem(T[] item) {
         this.item = item;
     }
 
