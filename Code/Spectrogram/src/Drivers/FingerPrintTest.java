@@ -18,12 +18,12 @@ import java.util.List;
  */
 public class FingerPrintTest {
     public static void main(String[] args){
-        String fileName = "480A";
-//        String fileName = "3876a";
-//        String fileName = "3877a";
-        WaveFile waveFile = new WaveFile("testData\\" + fileName + ".wav");
-        Spectrogram wavSpec = new Spectrogram(waveFile);
-        FingerPrint fingerPrint = new FingerPrint(wavSpec);
+//        String fileName = "480A";
+////        String fileName = "3876a";
+////        String fileName = "3877a";
+//        WaveFile waveFile = new WaveFile("testData\\originals\\" + fileName + ".wav");
+//        Spectrogram wavSpec = new Spectrogram(waveFile);
+//        FingerPrint fingerPrint = new FingerPrint(wavSpec);
 //        System.out.println("End File 1");
 
         String fileName2 = "480A";
@@ -31,20 +31,21 @@ public class FingerPrintTest {
       fileName2 = "07 Northern Cardinal";
 //        fileName2 = "06 White-throated Sparrow";
 //        fileName2 = "04 Wood Thrush";
-//      fileName2 = "02 Canyon Wren";
+      fileName2 = "Canyon Wren -- 1";
 //      fileName2 = "3876a";
 //      fileName2 = "3877a";
 
-        WaveFile waveFile2 = new WaveFile("testData\\" + fileName2 + ".wav");
+        WaveFile waveFile2 = new WaveFile("testData\\DB\\" + fileName2 + ".wav");
         Spectrogram wavSpec2 = new Spectrogram(waveFile2);
         FingerPrint fingerPrint2 = new FingerPrint(wavSpec2);
+
 //        System.out.println("End File 2");
 
 //        System.out.println("Phrases: " + fingerPrint2.getPhrases().size() + ", " + fingerPrint.getPhrases().size());
 //        double similarity = fingerPrint.match(fingerPrint2);
 //        System.out.println("Similarity: " + similarity );
 
-        System.out.println("First: ______________________\n" + fingerPrint.toString());
+//        System.out.println("First: ______________________\n" + fingerPrint.toString());
         System.out.println("Second: _____________________\n" + fingerPrint2.toString());
 
 

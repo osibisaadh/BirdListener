@@ -2,9 +2,6 @@ package Drivers;
 
 import Wav.WaveFile;
 import com.musicg.graphic.GraphicRender;
-import com.tomgibara.cluster.gvm.intgr.IntClusters;
-import com.tomgibara.cluster.gvm.intgr.IntListKeyer;
-import com.tomgibara.cluster.gvm.intgr.IntResult;
 import fingerprint.FingerPrint;
 import kmeans.Cluster;
 import kmeans.Item;
@@ -23,9 +20,9 @@ import java.util.List;
  * Time: 10:55 PM
  * To change this template use File | Settings | File Templates.
  */
-public class KMEANSDRIVER {
+public class BirdClustering {
 
-    private static List<int[]> pts = new ArrayList<int[]>();
+    private static List<Integer[]> pts = new ArrayList<Integer[]>();
     private static List<String> names = new ArrayList<String>();
     private static final String dirName = "testData\\DB";
 
@@ -55,24 +52,24 @@ public class KMEANSDRIVER {
                     String fileName = file.getName().split("\\.")[0];
                     FingerPrint fingerPrint = getFingerPrint(fileName);
                     names.add(fileName);
-                    addPoints(fingerPrint.getPrint());
+                    addPoints(fingerPrint.getPrint()[0]);
                     createSpectrogram(fileName);
                 }
             }
 
-            Kmeans kmeans = new Kmeans(20,11);
-            List<Item> items = new ArrayList<Item>();
+            Kmeans kmeans = new Kmeans(23,10, Double.class);
+            List<Item<Integer>> items = new ArrayList<Item<Integer>>();
             for(int i = 0; i < pts.size(); i++){
-                items.add(new Item(pts.get(i), names.get(i)));
-                System.out.println(pts.get(i) + " " + names.get(i));
+                items.add(new Item<Integer>(pts.get(i), names.get(i)));
+//                System.out.println(pts.get(i) + " " + names.get(i));
             }
 
             kmeans.setItems(items);
             kmeans.run();
-            List<Cluster> clusters = kmeans.getClusters();
+            List<Cluster<Integer>> clusters = kmeans.getClusters();
             for( int i = 0; i < clusters.size();i++){
-                System.out.println("Cluster: " + i + "Size: " + clusters.get(i).getPoints().size());
-                List<Item> cItems = clusters.get(i).getPoints();
+                System.out.println("Cluster: " + i + "Size: " + clusters.get(i).getPoints().size());// + " Centroid: " + getSPrint(clusters.get(i).getCenterPoint()));
+                List<Item<Integer>> cItems = clusters.get(i).getPoints();
                 for(int k =0; k < cItems.size(); k++){
                     System.out.println("\t" + cItems.get(k).getKey() + "\t" + getSPrint(cItems.get(k).getItem()));
                 }
@@ -83,7 +80,7 @@ public class KMEANSDRIVER {
         }
     }
 
-    private static String getSPrint(int[] print){
+    private static String getSPrint(Number[] print){
         String word = "";
         for(int i = 0; i < print.length; i++){
             word += print[i];
@@ -94,13 +91,15 @@ public class KMEANSDRIVER {
 
     }
 
-    private static void addPoints(int[][] prints){
+    private static void addPoints(int[] prints){
+        Integer[] itegerprint = new Integer[prints.length];
         for(int i = 0; i < prints.length; i++){
-            pts.add(prints[i]);
+            itegerprint[i] = new Integer(prints[i]);
         }
+        pts.add(itegerprint);
     }
 
-    private static void addPoints(int[] print){
+    private static void addPoints(Integer[] print){
         pts.add(print);
     }
 

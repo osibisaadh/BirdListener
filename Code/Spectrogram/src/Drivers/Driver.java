@@ -56,7 +56,7 @@ public class Driver {
                 }
             }
 
-            IntClusters <List<String>> clusters = new IntClusters<List<String>>(35, 10);
+            IntClusters <List<String>> clusters = new IntClusters<List<String>>(20, 10);
             clusters.setKeyer(new IntListKeyer<String>());
             int count = 0;
             for (int[] pt : pts) {

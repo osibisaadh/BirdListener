@@ -19,7 +19,6 @@ public class WaveFile {
     private byte[] rawData;
     private short[] data;
     private double[] normalizedData;
-    //private byte[] fingerprint;
     private String fileName;
 
     public WaveFile(String fileName){

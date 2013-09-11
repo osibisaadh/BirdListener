@@ -11,7 +11,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class Phrase {
-
+    private final int WORD_WEIGHT = 1;
     private final int MAX_LENGTH_DIFF = 4;
     private List<Word> words;
     private int lengthInMilisec = 0;
@@ -19,6 +19,7 @@ public class Phrase {
 
     public Phrase(List<Word> words) {
         this.words = words;
+//        System.out.println(words.size());
         try{
             this.lengthInMilisec = (int)((double)(words.get(words.size() - 1).getWordRange().getEnd() - words.get(0).getWordRange().getStart()) / words.get(0).getWordRange().getFramesPerSecond() * 1000);
         }catch (Exception e){
@@ -88,43 +89,43 @@ public class Phrase {
         int BEGIN_FREQ_2 = 3;
         int BEGIN_FREQ_3 = 4;
         int BEGIN_FREQ_4 = 5;
-//        int BEGIN_FREQ_5 = 6;
+        int BEGIN_FREQ_5 = 6;
 //        int BEGIN_FREQ_6 = 7;
 //        int BEGIN_FREQ_7 = 8;
 //        int BEGIN_FREQ_8 = 9;
 //        int BEGIN_FREQ_9 = 10;
 
-        int BEG_MID_DIRECTION_INDEX = 6;
-        int BEG_MID_CHANGE_INDEX = 7;
-        int MID_FREQ_INDEX = 8;
+        int BEG_MID_DIRECTION_INDEX = 7;
+        int BEG_MID_CHANGE_INDEX = 8;
+        int MID_FREQ_INDEX = 9;
 
-        int MID_FREQ_1 = 9;
-        int MID_FREQ_2 = 10;
-        int MID_FREQ_3 = 11;
-        int MID_FREQ_4 = 12;
-//        int MID_FREQ_5 = 16;
+        int MID_FREQ_1 = 10;
+        int MID_FREQ_2 = 11;
+        int MID_FREQ_3 = 12;
+        int MID_FREQ_4 = 13;
+        int MID_FREQ_5 = 14;
 //        int MID_FREQ_6 = 17;
 //        int MID_FREQ_7 = 18;
 //        int MID_FREQ_8 = 21;
 //        int MID_FREQ_9 = 22;
 
-        int MID_END_DIRECTION_INDEX = 13;
-        int MID_END_CHANGE_INDEX = 14;
-        int END_FREQ_INDEX = 15;
+        int MID_END_DIRECTION_INDEX = 15;
+        int MID_END_CHANGE_INDEX = 16;
+        int END_FREQ_INDEX = 17;
 
-        int END_FREQ_1 = 16;
-        int END_FREQ_2 = 17;
-        int END_FREQ_3 = 18;
-        int END_FREQ_4 = 19;
-//        int END_FREQ_5 = 20;
+        int END_FREQ_1 = 18;
+        int END_FREQ_2 = 19;
+        int END_FREQ_3 = 20;
+        int END_FREQ_4 = 21;
+        int END_FREQ_5 = 22;
 //        int END_FREQ_6 = 21;
 //        int END_FREQ_7 = 22;
 //        int END_FREQ_8 = 33;
 //        int END_FREQ_9 = 34;
 
-        int[] print = new int[20];
-
-        print[WORD_NUM_INDEX] = words.size();
+        int[] print = new int[23];
+        //m.out.println(words.size());
+        print[WORD_NUM_INDEX] = words.size() * WORD_WEIGHT;
         //print[MILISEC_INDEX] = lengthInMilisec;
         print[BEGIN_FREQ_INDEX] = words.get(0).getPrint()[0];
         print[MID_FREQ_INDEX] = words.get(words.size()/2).getPrint()[0];
@@ -133,7 +134,7 @@ public class Phrase {
         print[BEGIN_FREQ_2] = words.get(0).getPrint()[2];
         print[BEGIN_FREQ_3] = words.get(0).getPrint()[3];
         print[BEGIN_FREQ_4] = words.get(0).getPrint()[4];
-//        print[BEGIN_FREQ_5] = words.get(0).getPrint()[5];
+        print[BEGIN_FREQ_5] = words.get(0).getPrint()[5];
 //        print[BEGIN_FREQ_6] = words.get(0).getPrint()[6];
 //        print[BEGIN_FREQ_7] = words.get(0).getPrint()[7];
 //        print[BEGIN_FREQ_8] = words.get(0).getPrint()[8];
@@ -144,7 +145,7 @@ public class Phrase {
         print[MID_FREQ_2] = words.get(words.size()/2).getPrint()[2];
         print[MID_FREQ_3] = words.get(words.size()/2).getPrint()[3];
         print[MID_FREQ_4] = words.get(words.size()/2).getPrint()[4];
-//        print[MID_FREQ_5] = words.get(words.size()/2).getPrint()[5];
+        print[MID_FREQ_5] = words.get(words.size()/2).getPrint()[5];
 //        print[MID_FREQ_6] = words.get(words.size()/2).getPrint()[6];
 //        print[MID_FREQ_7] = words.get(words.size()/2).getPrint()[7];
 //        print[MID_FREQ_8] = words.get(words.size()/2).getPrint()[8];
@@ -159,7 +160,7 @@ public class Phrase {
         print[END_FREQ_2] = words.get(words.size()-1).getPrint()[2];
         print[END_FREQ_3] = words.get(words.size()-1).getPrint()[3];
         print[END_FREQ_4] = words.get(words.size()-1).getPrint()[4];
-//        print[END_FREQ_5] = words.get(words.size()-1).getPrint()[5];
+        print[END_FREQ_5] = words.get(words.size()-1).getPrint()[5];
 //        print[END_FREQ_6] = words.get(words.size()-1).getPrint()[6];
 //        print[END_FREQ_7] = words.get(words.size()-1).getPrint()[7];
 //        print[END_FREQ_8] = words.get(words.size()-1).getPrint()[8];

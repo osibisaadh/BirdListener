@@ -14,21 +14,27 @@ public class Cluster<T extends Number> {
     private int dimensions = 0;
     protected List<Item<T>> points = new ArrayList<Item<T>>();
     private T[] centerPoint;
+    private Class<T> type;
 
-    public Cluster(){
+    public Cluster(Class<T> type){
         centerPoint = (T[])new Number[dimensions];
     }
 
-    public Cluster(int dimensions){
+    public Cluster(int dimensions, Class<T> type){
         this.dimensions = dimensions;
         centerPoint = (T[])new Number[dimensions];
+        this.type = type;
     }
 
     public boolean computeCenter(){
         boolean changed = false;
         Number[] newCenter = new Number[centerPoint.length];
         for(int i = 0; i < newCenter.length;i++){
-            newCenter[i] = new Integer(0);
+            try{
+                newCenter[i] = type.getConstructor(double.class).newInstance(0);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
         for(int k = 0; k < newCenter.length; k++){
             for(int i = 0; i < points.size();i++){

@@ -1,83 +1,63 @@
 package Drivers;
-
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
+import java.io.BufferedReader;
 import java.io.File;
-import java.nio.ByteBuffer;
-
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
+import kmeans.*;
 public class Test {
     public static void main(String[] args) {
-        try{
-            //Check out audio File info
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("testData\\Canyon Wren -- 1.wav"));
-            AudioFormat format = audioInputStream.getFormat();
-            System.out.println("Channels: " + format.getChannels());
-            System.out.println("Encoding: " + format.getEncoding());
-            System.out.println("FrameRate: " + format.getFrameRate());
-            System.out.println("Frame Size: " + format.getFrameSize());
-            System.out.println("SampleRate: " + format.getSampleRate());
-            System.out.println("BigEdian: " + format.isBigEndian());
-            System.out.println("Framlength: " + audioInputStream.getFrameLength());
-            System.out.println("available: " +audioInputStream.available());
-            //Create byte array for data
-            byte[] data = new byte[audioInputStream.available()];
-            audioInputStream.read(data);
-            System.out.println(data.length/2);
-            System.out.println(data);
-            int bytesPerFrame = audioInputStream.getFormat().getFrameSize();
-            // Set buffer size of 1024 frames.
-            int numBytes = 1024 * bytesPerFrame;
-            byte[] audioBytes = new byte[numBytes];
-            int totalFramesRead =0;
-
-            int numBytesRead = 0;
-            int numFramesRead = 0;
-            // Try to read numBytes bytes from the file.
-            int count = 0;
-//            while ((numBytesRead = audioInputStream.read(audioBytes)) != -1) {
-//
-//                // Calculate the number of frames actually read.
-//                numFramesRead = numBytesRead / bytesPerFrame;
-//                totalFramesRead += numFramesRead;
-//                // Here, do something useful with the audio data that's
-//                // now in the audioBytes array...
-//                for(int i = 0; i < numBytesRead; i++){
-//                    data[count++] = audioBytes[i];
-//                }
-//
-//
-//            }
-//            double[] realdata = new double[data.length/8];
-//            for(int i = 0; i < realdata.length; i++){
-//                realdata[i] = toDouble(new byte[]{data[i*8],data[i*8 + 1],data[i*8 + 2],data[i*8 + 3], data[i*8 + 4],data[i*8 + 5], data[i*8 + 6],data[i*8 + 7]});
-//            }
-//            for(int i = 0; i< realdata.length; i++){
-//                System.out.println(realdata[i]);
-//            }
-//
-//            DoubleFFT_1D fft = new DoubleFFT_1D(2048);
-//            fft.complexForward(realdata);
-//
-//            for(int i = 0; i< realdata.length; i++){
-//                System.out.println("FFT " + i + ": " + realdata[i]);
-//            }
-//
-//
-//            System.out.println("Total bytes read: " + totalFramesRead * bytesPerFrame);
-
-        }catch(Exception e){
-            e.printStackTrace();
+        List<Double[]> doubles = readFile();
+        List<Item<Double>> items = new ArrayList<Item<Double>>();
+        for(int i = 0; i < doubles.size(); i++){
+            items.add(new Item<Double>(doubles.get(i), i +""));
+        }
+        Kmeans kmeans = new Kmeans(2,5, Double.class);
+        kmeans.setItems(items);
+        kmeans.run();
+        List<Cluster<Double>> clusters = kmeans.getClusters();
+        for( int i = 0; i < clusters.size();i++){
+            System.out.println("Cluster: " + i + " Size: " + clusters.get(i).getPoints().size() + " Centroid: " + getPrint(clusters.get(i).getCenterPoint()));
+            List<Item<Double>> cItems = clusters.get(i).getPoints();
+            for(int k =0; k < cItems.size(); k++){
+                System.out.println("\t" + cItems.get(k).getKey() + ": " + getPrint(cItems.get(k).getItem()));
+            }
         }
     }
 
-    public static byte[] toByteArray(double value) {
-        byte[] bytes = new byte[8];
-        ByteBuffer.wrap(bytes).putDouble(value);
-        return bytes;
-    }
+    public static List<Double[]> readFile(){
+        List<Double[]> doubles = new ArrayList<Double[]>();
 
-    public static double toDouble(byte[] bytes) {
-        return ByteBuffer.wrap(bytes).getDouble();
+        try{
+            File file = new File("TestData.txt");
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            boolean hasNext = true;
+            while(hasNext){
+                String line = reader.readLine();
+                if(line != null){
+                    Double[] array = {
+                            Double.parseDouble(line.split("    ")[0]),
+                            Double.parseDouble(line.split("    ")[1]),
+                    };
+                    doubles.add(array);
+                }
+                else
+                    hasNext = false;
+            }
+
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return doubles;
+    }
+    public static String getPrint(Number[] print){
+        String word = "";
+        for(int i = 0; i < print.length; i++){
+            word += print[i].doubleValue();
+            if(i < print.length-1)
+                word += "-";
+        }
+        return word;
     }
 }

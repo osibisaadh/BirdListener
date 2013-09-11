@@ -85,8 +85,11 @@ public class Spectrogram {
                 }
                 else{
                     spectrogram[i][j]=(Math.log10(rawSpectrogram[i][j]/minAmp))/diff;
-//                    if(spectrogram[i][j] < 0.83)
+//                    if(spectrogram[i][j] < 0.75)
 //                        spectrogram[i][j] = 0;
+//                    if(j <= 5)
+//                        spectrogram[i][j] = 0;
+
                 }
             }
 

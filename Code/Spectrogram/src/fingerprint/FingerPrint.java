@@ -25,14 +25,14 @@ public class FingerPrint {
 
     public FingerPrint(Spectrogram spectrogram){
         data = spectrogram.getSpectrogram();
+        System.out.println(spectrogram.getWaveFile().getFileName());
+        String[] nameParts = spectrogram.getWaveFile().getFileName().split("\\\\");
+        birdName = nameParts[nameParts.length-1].split(" -- ")[0];
+        //System.out.println(birdName);
         framesPerSecond = spectrogram.getFramesPerSecond();
         freqRange = data[0].length;
         List<WordRange> ranges = findPoints();
         phrases = getPhrases(getWords(ranges));
-        System.out.println(spectrogram.getWaveFile().getFileName());
-        String[] nameParts = spectrogram.getWaveFile().getFileName().split("\\\\");
-        birdName = nameParts[nameParts.length-1].split(" -- ")[0];
-        System.out.println(birdName);
     }
 
     private List<Word> getWords(List<WordRange> wordRanges){
@@ -54,8 +54,11 @@ public class FingerPrint {
         int start = 0;
         int lastLoc = 0;
         int end = 0;
+        //System.out.println(words.size());
         for(int i = 0; i < words.size(); i++){
             int startLoc = words.get(i).getWordRange().getStart();
+            if(lastLoc == 0)
+                lastLoc = startLoc;
             end = i+1;
             if(startLoc - lastLoc > SECONDS_BETWEEN_WORDS * framesPerSecond){
                 Phrase phrase = new Phrase(words.subList(start,end));
@@ -79,10 +82,11 @@ public class FingerPrint {
                     maxAmp = data[i][j];
             }
             if(maxAmp > AMP_THRESHHOLD){
-                int end = findEndPoint(i+1);
-                if(i+2 < end)
+                int end = findEndPoint(i);
+                if(i+1 < end){
                     ranges.add(new WordRange(i, end, framesPerSecond));
-                i = end + 1;
+                    i = end + 1;
+                }
             }
         }
         return ranges;
@@ -126,7 +130,7 @@ public class FingerPrint {
         int[][] print = new int[phrases.size()][];
         for(int i = 0; i < phrases.size(); i++){
             print[i] = phrases.get(i).getPrint();
-            System.out.println("\t" + phrases.get(i).toString() );
+            //.out.println("\t" + phrases.get(i).toString() );
         }
         return print;
     }
@@ -151,14 +155,15 @@ public class FingerPrint {
     }
 
     private int findEndPoint(int start){
-        int end = start;
-        for(int i = start; i < data.length; i++){
+        int end = start-1;
+        for(int i = start; i < data.length && end < start ; i++){
             double maxAmp = 0.0;
             for(int j = 0; j < data[i].length; j++){
                 if(data[i][j] > maxAmp)
                     maxAmp = data[i][j];
+
             }
-            if(maxAmp < AMP_THRESHHOLD)
+            if(maxAmp < AMP_THRESHHOLD )
                 end = i-1;
         }
         return end;

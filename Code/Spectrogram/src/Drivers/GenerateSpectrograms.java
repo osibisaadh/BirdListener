@@ -31,8 +31,8 @@ public class GenerateSpectrograms {
     //    String fileName2 = "07 Northern Cardinal";
     //    String fileName2 = "06 White-throated Sparrow";
     //    String fileName2 = "04 Wood Thrush";
-        String fileName2 = "02 Canyon Wren";
-        WaveFile waveFile2 = new WaveFile("testData\\" + fileName2 + ".wav");
+        String fileName2 = "Canyon Wren -- 1";
+        WaveFile waveFile2 = new WaveFile("testData\\DB" + fileName2 + ".wav");
         Spectrogram wavSpec2 = new Spectrogram(waveFile2);
 //        FingerPrint fingerPrint2 = new FingerPrint(wavSpec2);
 //        System.out.println("Phrases: " + fingerPrint2.getPhrases().size() + ", " + fingerPrint.getPhrases().size());
